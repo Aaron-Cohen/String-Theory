@@ -50,10 +50,10 @@ const Button = styled.button`
 	font-family:Arial;
 	font-size:15px;
     font-weight:bold;
-    height:     ${props => props.inlay ? '5vh' : '10vh'};
-    width:      ${props => (101 - props.fret * 3 + 'vw')};
-    maxWidth:   ${props => (101 - props.fret * 3 + 'vw')};
-    minWidth: 5vw;
+    height: ${props => props.inlay ? '5vh' : '10vh'};
+    width: ${props => (101 - props.fret * 3 + 'vw')};
+    minWidth: 2ch;
     margin: 1px;
+    overflow:
 	text-shadow:0px 1px 0px #ffffff;
 `;

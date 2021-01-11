@@ -5,10 +5,10 @@ import Fret from './Fret.js'
 import { mapNumberToNote } from '../GlobalsAndContext.js'
 
 export const FretRow = (props) => {
-    const frets = []
-    const context = useContext(GlobalContext)
-    for (let i = 1; i <= fretCount; i++)
-        frets.push(<Fret text={mapNumberToNote(i, context.mode)} dots={props.dots} fret={i} />)
+    const frets = [];
+    const context = useContext(GlobalContext);
+    for (let i = props.rootNote; i <= fretCount + props.rootNote; i++)
+        frets.push(<Fret text={mapNumberToNote(i, context.mode)} dots={props.dots} fret={i - props.rootNote} />);
 
     return (
         <ButtonRow>

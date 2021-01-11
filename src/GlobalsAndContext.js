@@ -103,7 +103,7 @@ export const mapNumberToNote = (note, accidental) => {
 }
 
 
-export const defaultTuningArray = ['E', 'B', 'G#', 'D', 'A', 'E']
+export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
 // Tuning should always be expressed numerically and not lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when
 // global context changes.

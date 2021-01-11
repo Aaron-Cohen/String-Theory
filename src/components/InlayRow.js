@@ -6,7 +6,7 @@ import { fretCount } from '../GlobalsAndContext.js'
 export default class InlayRow extends Component {
     render() {
         const frets = []
-        for (let i = 1; i <= fretCount; i++)
+        for (let i = 0; i <= fretCount; i++)
             frets.push(<Fret inlay={true} fret={i} />)
 
         return (
