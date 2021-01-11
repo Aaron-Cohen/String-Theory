@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Fret from './Fret.js'
-import fretCount from '../GlobalsAndContext.js'
+import { fretCount } from '../GlobalsAndContext.js'
 
 export default class InlayRow extends Component {
     render() {

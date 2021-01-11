@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { GlobalContext } from '../GlobalsAndContext'
+import { defaultTuningArray, GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
 
 const SidebarLink = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ export default class Submenu extends Component {
   componentDidMount() {
     let list = [];
     if (this.props.item.disableOneHot) {
-      list = ['E', 'B', 'G', 'D', 'A', 'E']
+      list = defaultTuningArray
     }
     else {
       list = new Array(this.props.item.subNav ? this.props.item.subNav.length : 1);
@@ -82,10 +82,29 @@ export default class Submenu extends Component {
       return true
     }
 
-    const updateText = (e, index) => {
+    const updateTuning = (newContent, originalContent, index) => {
+      newContent = newContent.trim().toLowerCase();
+      if (newContent.length < 1) {
+        return originalContent;
+      }
+      else if (newContent.length > 2) {
+        newContent = newContent.substring(0, 2);
+      }
+
+      alert(newContent)
+      newContent = newContent.toUpperCase().charAt(0) + newContent.slice(1)
+
+      // Number must map to a note
+      const note = mapNoteToNumber(newContent)
+      if (note < 0)
+        return originalContent;
+
+      this.context.tuning[index] = note;
       const list = this.state.list.slice();
-      list[index] = e;
-      this.setState({ list })
+      list[index] = newContent;
+      this.setState({ list });
+
+      return newContent;
     }
 
     return (
@@ -108,7 +127,9 @@ export default class Submenu extends Component {
                 <DropdownLink to={subItem.path} key={index} selected={this.state.list[index] === true}
                   onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem.title)} >
                   {subItem.icon}
-                  < SidebarLabel contentEditable={item.disableOneHot} onBlur={(e) => updateText(e, index)}> {subItem.title}</SidebarLabel>
+                  < SidebarLabel contentEditable={item.disableOneHot} spellCheck={false} onBlur={(e) => updateTuning(e.currentTarget.textContent, originalContent, index)} >
+                    {mapNumberToNote(this.context.tuning[index], this.context.mode)}
+                  </SidebarLabel>
                 </DropdownLink>
               );
             })

@@ -10,7 +10,7 @@ export const mapNoteToNumber = (note) => {
     note = note.trim();
     // Error trap invalid input
     if (typeof note !== 'string' || note.length === 0 || note.length > 2) {
-        throw new Error("Invalid input: must be string of length 1 or 2");
+        return -1;
     }
 
     // Get root note before flats/sharps are applied
@@ -38,7 +38,7 @@ export const mapNoteToNumber = (note) => {
             root = 11;
             break;
         default:
-            throw new Error("Root of note must be in set [A-G], case insensitive");
+            return -2;
     }
 
     // If note contains accidental in second character, apply sharp/flat logic
@@ -51,7 +51,7 @@ export const mapNoteToNumber = (note) => {
                 root -= 1;
                 break;
             default:
-                throw new Error("Second character of string must be b or # accidentals");
+                return -3;
         }
 
     return root;
@@ -102,18 +102,19 @@ export const mapNumberToNote = (note, accidental) => {
     }
 }
 
+
+export const defaultTuningArray = ['E', 'B', 'G#', 'D', 'A', 'E']
 // Tuning should always be expressed numerically and not lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when
 // global context changes.
 const defaultTuningMap = () => {
     const tuning = [];
-    ['E', 'B', 'G#', 'D', 'A', 'E'].forEach(note => {
+    defaultTuningArray.forEach(note => {
         tuning.push(mapNoteToNumber(note));
     })
     return tuning;
 }
 export const defaultTuning = defaultTuningMap();
-
 export const fretCount = 21;
 export const GlobalContext = React.createContext();
 export default GlobalContext;
