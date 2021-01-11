@@ -22,6 +22,7 @@ const SidebarLink = styled.div`
 
 const SidebarLabel = styled.span`
   margin-left: 16px;
+  padding: 20px;
 `;
 
 const DropdownLink = styled.div`
@@ -91,7 +92,6 @@ export default class Submenu extends Component {
         newContent = newContent.substring(0, 2);
       }
 
-      alert(newContent)
       newContent = newContent.toUpperCase().charAt(0) + newContent.slice(1)
 
       // Number must map to a note
@@ -127,8 +127,12 @@ export default class Submenu extends Component {
                 <DropdownLink to={subItem.path} key={index} selected={this.state.list[index] === true}
                   onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem.title)} >
                   {subItem.icon}
-                  < SidebarLabel contentEditable={item.disableOneHot} spellCheck={false} onBlur={(e) => updateTuning(e.currentTarget.textContent, originalContent, index)} >
-                    {mapNumberToNote(this.context.tuning[index], this.context.mode)}
+                  < SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
+                    onBlur={(e) => {
+                      if (item.disableOneHot)
+                        e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, originalContent, index);
+                    }}>
+                    {item.disableOneHot ? mapNumberToNote(this.context.tuning[index], this.context.mode) : originalContent}
                   </SidebarLabel>
                 </DropdownLink>
               );
