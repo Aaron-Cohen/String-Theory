@@ -67,6 +67,7 @@ export const mapNoteToNumber = (note) => {
     if (note.length === 2)
         switch (note.toLowerCase().charAt(1)) {
             case '#':
+            case 's':
                 root += 1;
                 break;
             case 'b':
@@ -124,8 +125,12 @@ export const mapNumberToNote = (note, accidental) => {
     }
 }
 
+export const debug = (arr) => {
+    console.log(arr.map(e => mapNumberToNote(e, 'Sharps')))
+}
 
-export const defaultNoteSet = [1, 3, 5, 6, 8, 9, 11];
+
+export const defaultNoteSet = [1, 3, 5, 6, 8, 10, 12]; // A Major Scale
 export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
 // Tuning should always be expressed numerically and not lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when

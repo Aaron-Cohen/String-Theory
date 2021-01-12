@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
+import { GlobalContext, mapNoteToNumber, mapNumberToNote, debug } from '../GlobalsAndContext'
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
@@ -70,7 +70,7 @@ export const SidebarData = () => {
         }
       ],
       disableOneHot: true,
-      action: () => { }
+      action: () => context.resetState() // necessary to rerender fretboard dynamically
     },
     {
       title: 'Root Note / Key',
@@ -128,8 +128,15 @@ export const SidebarData = () => {
         }
       ],
       action: (root) => {
-        const note = mapNoteToNumber(root)
-        context.updateRoot(note)
+        // Two-part approach: update root, but also recalculate whatever set of notes is present
+        // with relation to new root
+        const note = mapNoteToNumber(root);
+        context.updateRoot(note);
+        let difference = context.noteSet[0] - note;
+        const newVals = context.noteSet.map(e => (e - difference + 12) % 12);
+        debug(newVals)
+        context.updateNoteSet(newVals)
+        return true;
       }
     },
     {
@@ -181,7 +188,7 @@ export const SidebarData = () => {
         // Handle scales explicitly before messy chord
         if (selection.includes('Scale')) {
           if (selection.includes('Major'))
-            noteSet = [root, root + 2, root + 4, root + 5, root + 7, root + 8, root + 10];
+            noteSet = [root, root + 2, root + 4, root + 3, root + 5, root + 7, root + 10];
           else if (selection.includes('Minor')) {
             noteSet = [root, root + 2, root + 3, root + 5, root + 7, root + 8, root + 10];
           }
@@ -228,19 +235,41 @@ export const SidebarData = () => {
       iconOpened: <RiIcons.RiArrowUpSFill />,
       subNav: [
         {
-          title: 'Display Dots / Fret Numbers',
+          title: 'Dots / Fret Numbers',
           icon: <FaIcons.FaClipboardList />
         },
         {
-          title: 'Disable Dot Inlays',
+          title: 'Dot Inlays',
           icon: <FaIcons.FaClipboardList />
         },
         {
-          title: 'Disable Fret Numbers',
+          title: 'Fret Numbers',
+          icon: <FaIcons.FaClipboardList />
+        },
+        {
+          title: 'Nothing',
           icon: <FaIcons.FaClipboardList />
         }
       ],
-      action: () => { }
+      action: (title) => {
+        if (title === 'Dots / Fret Numbers') {
+          context.updateInlays(true);
+          context.updateFretNumbers(true);
+        }
+        else if (title === 'Dot Inlays') {
+          context.updateInlays(true);
+          context.updateFretNumbers(false);
+        }
+        else if (title === 'Fret Numbers') {
+          context.updateInlays(false);
+          context.updateFretNumbers(true);
+        }
+        else {
+          context.updateInlays(false);
+          context.updateFretNumbers(false);
+        }
+        return true;
+      }
     },
     {
       title: 'Embellishment',

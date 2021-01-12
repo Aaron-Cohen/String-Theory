@@ -3,19 +3,19 @@ import FretRow from './FretRow'
 import InlayRow from './InlayRow'
 import { GlobalContext } from '../GlobalsAndContext.js';
 
-const Fretboard = () => {
-  const context = useContext(GlobalContext)
+const Fretboard = (props) => {
+  const context = useContext(GlobalContext);
   return (
     <div style={layout}>
       <br />
       <FretRow rootNote={context.tuning[0]} />
       <FretRow rootNote={context.tuning[1]} />
       <FretRow rootNote={context.tuning[2]} />
-      <InlayRow />
+      { context.inlays && <InlayRow />}
       <FretRow rootNote={context.tuning[3]} />
       <FretRow rootNote={context.tuning[4]} />
       <FretRow rootNote={context.tuning[5]} />
-      <InlayRow text={true} />
+      { context.fretNumbers && <InlayRow text={true} />}
     </div>
   )
 }

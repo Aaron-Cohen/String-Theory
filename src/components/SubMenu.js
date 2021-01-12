@@ -108,7 +108,7 @@ export default class Submenu extends Component {
     }
 
     return (
-      <div>
+      <>
         <SidebarLink to={item.path} onClick={showSubNavigation}>
           <div>
             {item.icon}
@@ -118,19 +118,23 @@ export default class Submenu extends Component {
             {this.state.subnav ? item.iconOpened : item.iconClosed}
           </div>
         </SidebarLink>
-        <div style={{ overflowY: 'auto', maxHeight: '45vh' }}>
+        <div style={{ overflowY: 'auto', maxHeight: '40vh' }}>
           {this.state.showSubNavigation &&
             item.subNav.map((subItem, index) => {
               const originalContent = subItem.title;
               return (
                 <DropdownLink key={index} selected={this.state.list[index] === true}
-                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem.title)} >
+                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem.title) && (this.context.root = 3)} >
                   {subItem.icon}
                   <SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
                     onBlur={(e) => {
-                      if (item.disableOneHot)
+                      if (item.disableOneHot) {
                         e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, originalContent, index);
-                    }}>
+                        item.action();
+                      }
+                    }}
+                    onKeyDown={(e) => (e.code === 'Enter' || e.code === 'Tab') && (e.currentTarget.blur())}
+                  >
                     {item.disableOneHot ? mapNumberToNote(this.context.tuning[index], this.context.mode) : originalContent}
                   </SidebarLabel>
                 </DropdownLink>
@@ -138,7 +142,7 @@ export default class Submenu extends Component {
             })
           }
         </div >
-      </div >
+      </ >
     )
   }
 }
@@ -147,11 +151,10 @@ Submenu.contextType = GlobalContext
 /*
 Todo list:
 1) If root note is G# or Ab, make it switch to the other when mode changes
+  Or, take away sharps/flat mode from user and manually do it depending on scale.
 2) Slide fretboard right when sidebar opens
 3) Update fretboard while sidebar is open
-4) Setting to toggle inlays
 5) Nut for open fret
-6) A and A# same note?
 7) Scrollbars when not needed in sidebar
-8) Page only updates when new scale selected
+9) Clean up code
 */
