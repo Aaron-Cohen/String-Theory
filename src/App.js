@@ -4,14 +4,18 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Alt2ner from './pages/Alt2ner';
 import About from './pages/About';
-import { GlobalContext, defaultTuning } from './GlobalsAndContext'
+import { GlobalContext, defaultTuning, defaultNoteSet } from './GlobalsAndContext'
 
 
 export default class App extends Component {
   state = {
-    tuning: defaultTuning,
     mode: 'Sharps',
+    root: 1,
+    noteSet: defaultNoteSet,
+    tuning: defaultTuning,
     updateMode: (mode) => this.setState({ mode }),
+    updateRoot: (root) => this.setState({ root }),
+    updateNoteSet: (noteSet) => this.setState({ noteSet }),
     updateTuning: (stringNumber, note) => {
       const tuning = this.state.tuning.slice();
       tuning[stringNumber] = note;

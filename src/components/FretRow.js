@@ -8,7 +8,7 @@ export const FretRow = (props) => {
     const frets = [];
     const context = useContext(GlobalContext);
     for (let i = props.rootNote; i <= fretCount + props.rootNote; i++)
-        frets.push(<Fret text={mapNumberToNote(i, context.mode)} dots={props.dots} fret={i - props.rootNote} />);
+        frets.push(<Fret text={context.noteSet.includes(i % 12) ? mapNumberToNote(i, context.mode) : ''} fret={i - props.rootNote} />);
 
     return (
         <ButtonRow>

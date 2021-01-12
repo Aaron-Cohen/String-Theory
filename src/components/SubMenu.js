@@ -53,7 +53,7 @@ export default class Submenu extends Component {
   }
 
   componentDidMount() {
-    let list = [];
+    let list = null;
     if (this.props.item.disableOneHot) {
       list = defaultTuningArray
     }
@@ -118,16 +118,15 @@ export default class Submenu extends Component {
             {this.state.subnav ? item.iconOpened : item.iconClosed}
           </div>
         </SidebarLink>
-        <div style={{ overflowY: 'auto', maxHeight: '50vh' }}>
+        <div style={{ overflowY: 'auto', maxHeight: '45vh' }}>
           {this.state.showSubNavigation &&
             item.subNav.map((subItem, index) => {
               const originalContent = subItem.title;
               return (
-                !subItem.hide &&
-                <DropdownLink to={subItem.path} key={index} selected={this.state.list[index] === true}
+                <DropdownLink key={index} selected={this.state.list[index] === true}
                   onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem.title)} >
                   {subItem.icon}
-                  < SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
+                  <SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
                     onBlur={(e) => {
                       if (item.disableOneHot)
                         e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, originalContent, index);
@@ -144,3 +143,15 @@ export default class Submenu extends Component {
   }
 }
 Submenu.contextType = GlobalContext
+
+/*
+Todo list:
+1) If root note is G# or Ab, make it switch to the other when mode changes
+2) Slide fretboard right when sidebar opens
+3) Update fretboard while sidebar is open
+4) Setting to toggle inlays
+5) Nut for open fret
+6) A and A# same note?
+7) Scrollbars when not needed in sidebar
+8) Page only updates when new scale selected
+*/

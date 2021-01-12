@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import FretRow from './FretRow.js'
-import InlayRow from './InlayRow.js'
+import FretRow from './FretRow'
+import InlayRow from './InlayRow'
 import { GlobalContext } from '../GlobalsAndContext.js';
 
 const Fretboard = () => {
@@ -15,6 +15,7 @@ const Fretboard = () => {
       <FretRow rootNote={context.tuning[3]} />
       <FretRow rootNote={context.tuning[4]} />
       <FretRow rootNote={context.tuning[5]} />
+      <InlayRow text={true} />
     </div>
   )
 }

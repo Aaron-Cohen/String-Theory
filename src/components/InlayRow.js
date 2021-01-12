@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Fret from './Fret.js'
+import Inlay from './Inlay.js'
 import { fretCount } from '../GlobalsAndContext.js'
 
 export default class InlayRow extends Component {
     render() {
         const frets = []
         for (let i = 0; i <= fretCount; i++)
-            frets.push(<Fret inlay={true} fret={i} />)
+            frets.push(<Inlay fret={i} text={this.props.text ? i : ''} />)
 
         return (
             <ButtonRow>

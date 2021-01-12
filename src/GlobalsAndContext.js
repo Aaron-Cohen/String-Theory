@@ -1,4 +1,26 @@
 import React from 'react';
+/*
+    Notes can be represented as such
+    0: G# / Ab
+    1: A
+    2: A# / Bb
+    3: B
+    4: C
+    5: C# / Db
+    6: D
+    7: D# / Eb
+    8: E
+    9: F
+   10: F# / Gb
+   11: G
+   12: G# / Ab <-- Octave
+
+    So there are 12 unique notes, represented by the numbers [0,11].
+    This allows for easy maths using the modulo operator to read a note's
+    profile regardless of a note's octave
+
+*/
+
 /**
  * Maps a letter representation of a musical note (as a String) to a integer value.
  * Accepts natural notes, and notes followed by a # or b accidental for sharp and flat
@@ -54,7 +76,7 @@ export const mapNoteToNumber = (note) => {
                 return -3;
         }
 
-    return root;
+    return root % 12;
 }
 
 /**
@@ -103,6 +125,7 @@ export const mapNumberToNote = (note, accidental) => {
 }
 
 
+export const defaultNoteSet = [1, 3, 5, 6, 8, 9, 11];
 export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
 // Tuning should always be expressed numerically and not lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when

@@ -1,26 +1,10 @@
 import React, { useContext } from 'react';
-import { GlobalContext, mapNumberToNote } from '../GlobalsAndContext'
+import { GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
 import * as GiIcons from 'react-icons/gi';
 import * as CgIcons from 'react-icons/cg';
-
-
-// const listOfNotes = [
-//   {
-//     title: 'A',
-//     icon: <FaIcons.FaMapPin />
-//   },
-//   {
-//     title: 'A#',
-//     icon: <FaIcons.FaMapPin />
-//   },
-//   {
-//     title: 'Bb',
-//     icon: <FaIcons.FaMapPin />
-//   },
-// ]
 
 export const SidebarData = () => {
   const context = useContext(GlobalContext)
@@ -90,17 +74,10 @@ export const SidebarData = () => {
     },
     {
       title: 'Root Note / Key',
-      path: '/overview',
       icon: <FaIcons.FaSortAlphaDown />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-
       subNav: [
-        {
-          title: 'Ab',
-          hide: context.mode !== 'Flats',
-          icon: <FaIcons.FaMapPin />
-        },
         {
           title: 'A',
           icon: <FaIcons.FaMapPin />
@@ -146,43 +123,124 @@ export const SidebarData = () => {
           icon: <FaIcons.FaMapPin />
         },
         {
-          title: 'G#',
-          hide: context.mode !== 'Sharps',
+          title: context.mode === 'Sharps' ? 'G#' : 'Ab',
           icon: <FaIcons.FaMapPin />
         }
-      ]
+      ],
+      action: (root) => {
+        const note = mapNoteToNumber(root)
+        context.updateRoot(note)
+      }
     },
     {
       title: 'Pattern Type',
-      path: '/reports',
-      icon: <IoIcons.IoIosPaper />,
+      icon: <FaIcons.FaWrench />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-
       subNav: [
         {
-          title: 'Reports',
-          path: '/reports/reports1',
+          title: 'Major Scale',
           icon: <IoIcons.IoIosPaper />,
-          cName: 'sub-nav'
         },
         {
-          title: 'Reports 2',
-          path: '/reports/reports2',
+          title: 'Minor Scale',
           icon: <IoIcons.IoIosPaper />,
-          cName: 'sub-nav'
         },
         {
-          title: 'Reports 3',
-          path: '/reports/reports3',
-          icon: <IoIcons.IoIosPaper />
+          title: 'Major',
+          icon: <IoIcons.IoIosPaper />,
+        },
+        {
+          title: 'Major 7',
+          icon: <IoIcons.IoIosPaper />,
+        },
+        {
+          title: 'Minor',
+          icon: <IoIcons.IoIosPaper />,
+        },
+        {
+          title: 'Minor 7',
+          icon: <IoIcons.IoIosPaper />,
+        },
+        {
+          title: 'Dominant 7',
+          icon: <IoIcons.IoIosPaper />,
+        },
+        {
+          title: 'Augmented',
+          icon: <IoIcons.IoIosPaper />,
+        },
+        {
+          title: 'Diminished',
+          icon: <IoIcons.IoIosPaper />,
         }
-      ]
+      ],
+      action: (selection) => {
+        const { root } = context;
+        let noteSet = []
+        // Handle scales explicitly before messy chord
+        if (selection.includes('Scale')) {
+          if (selection.includes('Major'))
+            noteSet = [root, root + 2, root + 4, root + 5, root + 7, root + 8, root + 10];
+          else if (selection.includes('Minor')) {
+            noteSet = [root, root + 2, root + 3, root + 5, root + 7, root + 8, root + 10];
+          }
+
+          noteSet = noteSet.map(note => note % 12)
+          context.updateNoteSet(noteSet);
+          return;
+        }
+
+        // Build other chords as they pertain to a basic major chord
+        let third = root + 4;
+        let fifth = third + 3;
+        let seventh = fifth + 4;
+        if (selection.includes('Diminished')) {
+          third -= 1;
+          fifth -= 1;
+        }
+        else if (selection.includes('Minor')) {
+          third -= 1;
+        }
+        else if (selection.includes('Augmented')) {
+          third += 1;
+          fifth += 1;
+        }
+
+        if (selection.includes('7')) {
+          if (!selection.includes('Major')) // cases of minor, dominant
+            seventh -= 1;
+          noteSet = [root, third, fifth, seventh];
+        }
+        else
+          noteSet = [root, third, fifth];
+
+
+        noteSet = noteSet.map(note => note % 12)
+        context.updateNoteSet(noteSet);
+        return;
+      }
     },
     {
-      title: 'Flavor',
-      path: '/products',
-      icon: <FaIcons.FaCartPlus />
+      title: 'Settings',
+      icon: <FaIcons.FaUserCog />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+      subNav: [
+        {
+          title: 'Display Dots / Fret Numbers',
+          icon: <FaIcons.FaClipboardList />
+        },
+        {
+          title: 'Disable Dot Inlays',
+          icon: <FaIcons.FaClipboardList />
+        },
+        {
+          title: 'Disable Fret Numbers',
+          icon: <FaIcons.FaClipboardList />
+        }
+      ],
+      action: () => { }
     },
     {
       title: 'Embellishment',
