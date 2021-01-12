@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Inlay from './Inlay.js'
+import Nut from './Nut'
 import { fretCount } from '../GlobalsAndContext.js'
 
 export default class InlayRow extends Component {
@@ -9,15 +10,16 @@ export default class InlayRow extends Component {
         for (let i = 0; i <= fretCount; i++)
             frets.push(<Inlay fret={i} text={this.props.text ? i : ''} />)
 
+        frets.splice(1, 0, <Nut hideNut={this.props.hideNut} />)
         return (
-            <ButtonRow>
+            <Row>
                 {frets}
-            </ButtonRow>
+            </Row>
         )
     }
 }
 
-const ButtonRow = styled.div`
+const Row = styled.div`
   display: flex; 
   margin: auto;
   width: 75vw;

@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Fretboard from '../components/Fretboard';
-import GlobalContext from '../GlobalsAndContext'
 
-export const Alt2ner = () => { const context = useContext(GlobalContext); return (<Fretboard update={context.root} />) }
+export const Alt2ner = () => (<Fretboard />)
 export default Alt2ner;

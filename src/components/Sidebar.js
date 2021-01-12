@@ -7,6 +7,8 @@ import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 
+import { useLocation } from 'react-router-dom'
+
 const Nav = styled.div`
   background: #15171c;
   height: 80px;
@@ -43,24 +45,22 @@ const SidebarWrap = styled.div`
 
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
-
-  const showSidebar = () => setSidebar(!sidebar);
-
+  const path = useLocation().pathname;
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <Nav>
           <NavIcon to='#'>
-            <FaIcons.FaBars onClick={showSidebar} />
+            <FaIcons.FaBars onClick={() => setSidebar(!sidebar)} />
           </NavIcon>
         </Nav>
         <SidebarNav sidebar={sidebar}>
           <SidebarWrap>
             <NavIcon to='#'>
-              <AiIcons.AiOutlineClose onClick={showSidebar} />
+              <AiIcons.AiOutlineClose onClick={() => setSidebar(!sidebar)} />
             </NavIcon>
             {SidebarData().map((item, index) => {
-              return <SubMenu item={item} key={index} />;
+              return (item.page === path) && <SubMenu item={item} key={index} />;
             })}
           </SidebarWrap>
         </SidebarNav>

@@ -14,6 +14,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaSlidersH />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/Alt2ner',
       subNav: [
         {
           title: 'Sharps',
@@ -31,6 +32,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaGuitar />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/Alt2ner',
       subNav: [
         {
           title: mapNumberToNote(context.tuning[0], context.mode),
@@ -74,10 +76,10 @@ export const SidebarData = () => {
     },
     {
       title: 'Tuning Presets',
-      path: '/team',
       icon: <FaIcons.FaUserCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/Alt2ner',
       subNav: [
         {
           title: 'Standard',
@@ -127,6 +129,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaSortAlphaDown />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/Alt2ner',
       subNav: [
         {
           title: 'A',
@@ -195,6 +198,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaWrench />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/Alt2ner',
       subNav: [
         {
           title: 'Major Scale',
@@ -285,6 +289,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/Alt2ner',
       subNav: [
         {
           title: 'Dots / Fret Numbers',
@@ -306,14 +311,22 @@ export const SidebarData = () => {
       action: (setting) => {
         const { title } = setting;
         context.updateInlays(title.includes('Dot'))
-        context.updateFretNumbers(title.includes('Fret Numbers'))
+        context.updateFretNumbers(title.includes('Numbers'))
         return true;
       }
     },
     {
       title: 'Project Info',
-      path: '/About',
       icon: <IoIcons.IoMdHelpCircle />,
+      path: '/About',
+      page: '/Alt2ner',
+      subNav: []
+    },
+    {
+      title: 'Return to Guitar',
+      icon: <FaIcons.FaGuitar />,
+      path: '/Alt2ner',
+      page: '/About',
       subNav: []
     }
   ]

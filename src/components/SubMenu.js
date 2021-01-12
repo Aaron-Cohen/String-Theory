@@ -160,5 +160,7 @@ Todo list:
 7) Scrollbars when not needed in sidebar
 9) Clean up code
 10) Custom ('select as many notes as you want')
+11) Hide nut?
+11.5) Put all styled div's in one file and pull for reuse
 12) re-add hidden ab/g# but have no default root, and make default scale chromatic- that is also default scale option
 */

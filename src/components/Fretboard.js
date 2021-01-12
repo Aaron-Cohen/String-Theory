@@ -6,7 +6,7 @@ import { GlobalContext } from '../GlobalsAndContext.js';
 const Fretboard = (props) => {
   const context = useContext(GlobalContext);
   return (
-    <div style={layout}>
+    <div style={{ padding: '10px', maxwidth: '75vw' }}>
       <br />
       <FretRow rootNote={context.tuning[0]} />
       <FretRow rootNote={context.tuning[1]} />
@@ -15,13 +15,8 @@ const Fretboard = (props) => {
       <FretRow rootNote={context.tuning[3]} />
       <FretRow rootNote={context.tuning[4]} />
       <FretRow rootNote={context.tuning[5]} />
-      { context.fretNumbers && <InlayRow text={true} />}
+      { context.fretNumbers && <InlayRow text={true} hideNut={true} />}
     </div>
   )
 }
 export default Fretboard;
-
-const layout = {
-  padding: '10px',
-  maxwidth: '75vw'
-}
