@@ -305,30 +305,16 @@ export const SidebarData = () => {
       ],
       action: (setting) => {
         const { title } = setting;
-        alert(title)
-        if (title === 'Dots / Fret Numbers') {
-          context.updateInlays(true);
-          context.updateFretNumbers(true);
-        }
-        else if (title === 'Dot Inlays') {
-          context.updateInlays(true);
-          context.updateFretNumbers(false);
-        }
-        else if (title === 'Fret Numbers') {
-          context.updateFretNumbers(true);
-          context.updateInlays(false);
-        }
-        else {
-          context.updateInlays(false);
-          context.updateFretNumbers(false);
-        }
+        context.updateInlays(title.includes('Dot'))
+        context.updateFretNumbers(title.includes('Fret Numbers'))
         return true;
       }
     },
     {
-      title: 'Support',
-      path: '/support',
-      icon: <IoIcons.IoMdHelpCircle />
+      title: 'Project Info',
+      path: '/About',
+      icon: <IoIcons.IoMdHelpCircle />,
+      subNav: []
     }
   ]
 };

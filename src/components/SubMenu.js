@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
+import { Link } from 'react-router-dom';
 import { defaultTuningArray, GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
 
-const SidebarLink = styled.div`
+const SidebarLink = styled(Link)`
   display: flex;
   color: #e1e9fc;
   justify-content: space-between;
