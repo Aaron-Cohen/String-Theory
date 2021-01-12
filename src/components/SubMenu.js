@@ -23,11 +23,11 @@ const SidebarLink = styled.div`
 const SidebarLabel = styled.span`
   margin-left: 16px;
   padding: 20px;
+  font-size: 16: px;
 `;
 
 const DropdownLink = styled.div`
   background: ${props => (props.selected ? '#632ce4;' : '#414757;')} 
-  height: 60px;
   padding-left: 3rem;
   display: flex;
   align-items: center;
@@ -115,7 +115,7 @@ export default class Submenu extends Component {
             <SidebarLabel>{item.title}</SidebarLabel>
           </div>
           <div>
-            {this.state.subnav ? item.iconOpened : item.iconClosed}
+            {this.state.showSubNavigation ? item.iconOpened : item.iconClosed}
           </div>
         </SidebarLink>
         <div style={{ overflowY: 'auto', maxHeight: '40vh' }}>
@@ -124,7 +124,7 @@ export default class Submenu extends Component {
               const originalContent = subItem.title;
               return (
                 <DropdownLink key={index} selected={this.state.list[index] === true}
-                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem.title) && (this.context.root = 3)} >
+                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem) && (this.context.root = 3)} >
                   {subItem.icon}
                   <SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
                     onBlur={(e) => {
@@ -157,4 +157,6 @@ Todo list:
 5) Nut for open fret
 7) Scrollbars when not needed in sidebar
 9) Clean up code
+10) Custom ('select as many notes as you want')
+12) re-add hidden ab/g# but have no default root, and make default scale chromatic- that is also default scale option
 */

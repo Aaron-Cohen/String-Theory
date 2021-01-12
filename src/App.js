@@ -24,6 +24,7 @@ export default class App extends Component {
       tuning[stringNumber] = note;
       this.setState({ tuning })
     },
+    setTuning: (tuning) => this.setState({ tuning }),
     resetState: () => this.setState(this.state)
   }
 

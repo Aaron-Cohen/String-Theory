@@ -24,10 +24,10 @@ export const SidebarData = () => {
           icon: <CgIcons.CgTrendingDown />,
         }
       ],
-      action: (choice) => context.updateMode(choice)
+      action: (choice) => context.updateMode(choice.title)
     },
     {
-      title: 'Tuning',
+      title: 'Custom Tuning',
       icon: <FaIcons.FaGuitar />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
@@ -71,6 +71,56 @@ export const SidebarData = () => {
       ],
       disableOneHot: true,
       action: () => context.resetState() // necessary to rerender fretboard dynamically
+    },
+    {
+      title: 'Tuning Presets',
+      path: '/team',
+      icon: <FaIcons.FaUserCog />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+      subNav: [
+        {
+          title: 'Standard',
+          tuning: ['E', 'B', 'G', 'D', 'A', 'E'],
+          icon: <FaIcons.FaUserAlt />
+        },
+        {
+          title: 'Open G',
+          tuning: ['D', 'B', 'G', 'D', 'G', 'D'],
+          icon: <FaIcons.FaUserAlt />
+        },
+        {
+          title: 'Open D',
+          tuning: ['D', 'A', 'F#', 'D', 'A', 'D'],
+          icon: <FaIcons.FaUserAlt />
+        },
+        {
+          title: 'Drop D',
+          tuning: ['E', 'B', 'G', 'D', 'A', 'D'],
+          icon: <FaIcons.FaUserAlt />
+        },
+        {
+          title: 'Drop C',
+          tuning: ['E', 'B', 'G', 'D', 'A', 'C'],
+          icon: <FaIcons.FaUserAlt />
+        },
+        {
+          title: 'E C G C A C\n(Mumford & Sons)',
+          tuning: ['E', 'C', 'G', 'C', 'A', 'C'],
+          icon: <FaIcons.FaUserAlt />
+        },
+        {
+          title: 'E C G C A F\n(American Football)',
+          tuning: ['E', 'C', 'G', 'C', 'A', 'F'],
+          icon: <FaIcons.FaUserAlt />
+        },
+        {
+          title: 'E A G C A F\n(Yvette Young)',
+          tuning: ['E', 'A', 'G', 'C', 'A', 'F'],
+          icon: <FaIcons.FaUserAlt />
+        },
+      ],
+      action: (info) => context.setTuning(info.tuning.map(e => mapNoteToNumber(e)))
     },
     {
       title: 'Root Note / Key',
@@ -128,6 +178,7 @@ export const SidebarData = () => {
         }
       ],
       action: (root) => {
+        root = root.title;
         // Two-part approach: update root, but also recalculate whatever set of notes is present
         // with relation to new root
         const note = mapNoteToNumber(root);
@@ -183,6 +234,7 @@ export const SidebarData = () => {
         }
       ],
       action: (selection) => {
+        selection = selection.title;
         const { root } = context;
         let noteSet = []
         // Handle scales explicitly before messy chord
@@ -230,7 +282,7 @@ export const SidebarData = () => {
     },
     {
       title: 'Settings',
-      icon: <FaIcons.FaUserCog />,
+      icon: <FaIcons.FaCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
       subNav: [
@@ -251,7 +303,9 @@ export const SidebarData = () => {
           icon: <FaIcons.FaClipboardList />
         }
       ],
-      action: (title) => {
+      action: (setting) => {
+        const { title } = setting;
+        alert(title)
         if (title === 'Dots / Fret Numbers') {
           context.updateInlays(true);
           context.updateFretNumbers(true);
@@ -261,8 +315,8 @@ export const SidebarData = () => {
           context.updateFretNumbers(false);
         }
         else if (title === 'Fret Numbers') {
-          context.updateInlays(false);
           context.updateFretNumbers(true);
+          context.updateInlays(false);
         }
         else {
           context.updateInlays(false);
@@ -270,11 +324,6 @@ export const SidebarData = () => {
         }
         return true;
       }
-    },
-    {
-      title: 'Embellishment',
-      path: '/team',
-      icon: <IoIcons.IoMdPeople />
     },
     {
       title: 'Support',
