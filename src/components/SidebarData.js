@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { GlobalContext, mapNoteToNumber, mapNumberToNote, debug } from '../GlobalsAndContext'
+import { GlobalContext, mapNoteToNumber, mapNumberToNote, debug, majorScale, minorScale } from '../GlobalsAndContext'
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
@@ -244,9 +244,9 @@ export const SidebarData = () => {
         // Handle scales explicitly before messy chord
         if (selection.includes('Scale')) {
           if (selection.includes('Major'))
-            noteSet = [root, root + 2, root + 4, root + 3, root + 5, root + 7, root + 10];
+            noteSet = majorScale(root);
           else if (selection.includes('Minor')) {
-            noteSet = [root, root + 2, root + 3, root + 5, root + 7, root + 8, root + 10];
+            noteSet = minorScale(root);
           }
 
           noteSet = noteSet.map(note => note % 12)

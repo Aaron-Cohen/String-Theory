@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import FretRow from './FretRow'
-import InlayRow from './InlayRow'
+import FretRow from './FretRow';
+import InlayRow from './InlayRow';
+import styled from 'styled-components';
 import { GlobalContext } from '../GlobalsAndContext.js';
 
-const Fretboard = (props) => {
+const Fretboard = () => {
   const context = useContext(GlobalContext);
   return (
-    <div style={{ padding: '10px', maxwidth: '75vw' }}>
+    <Board sidebar={context.sidebar}>
       <br />
       <FretRow rootNote={context.tuning[0]} />
       <FretRow rootNote={context.tuning[1]} />
@@ -16,7 +17,12 @@ const Fretboard = (props) => {
       <FretRow rootNote={context.tuning[4]} />
       <FretRow rootNote={context.tuning[5]} />
       { context.fretNumbers && <InlayRow text={true} hideNut={true} />}
-    </div>
+    </Board>
   )
 }
 export default Fretboard;
+
+const Board = styled.div`
+  ${props => props.sidebar && `margin-left: 17vw`};
+  transition: 350ms ease;
+`;

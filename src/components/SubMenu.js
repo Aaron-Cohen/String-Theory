@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { Link } from 'react-router-dom';
-import { defaultTuningArray, GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
+import { GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
 
 const SidebarLink = styled(Link)`
   display: flex;
@@ -57,7 +57,7 @@ export default class Submenu extends Component {
   componentDidMount() {
     let list = null;
     if (this.props.item.disableOneHot) {
-      list = defaultTuningArray
+      list = this.context.tuning
     }
     else {
       list = new Array(this.props.item.subNav ? this.props.item.subNav.length : 1);
@@ -126,7 +126,7 @@ export default class Submenu extends Component {
               const originalContent = subItem.title;
               return (
                 <DropdownLink key={index} selected={this.state.list[index] === true}
-                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem) && (this.context.root = 3)} >
+                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem)} >
                   {subItem.icon}
                   <SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
                     onBlur={(e) => {
@@ -155,12 +155,12 @@ Todo list:
 1) If root note is G# or Ab, make it switch to the other when mode changes
   Or, take away sharps/flat mode from user and manually do it depending on scale.
 2) Slide fretboard right when sidebar opens
-3) Update fretboard while sidebar is open
-5) Nut for open fret
-7) Scrollbars when not needed in sidebar
 9) Clean up code
 10) Custom ('select as many notes as you want')
 11) Hide nut?
 11.5) Put all styled div's in one file and pull for reuse
 12) re-add hidden ab/g# but have no default root, and make default scale chromatic- that is also default scale option
+13) info page
+14) lefty mode
+15) something funky happens if you do a# major in # mode
 */

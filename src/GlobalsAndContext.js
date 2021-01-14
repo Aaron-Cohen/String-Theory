@@ -129,8 +129,9 @@ export const debug = (arr) => {
     console.log(arr.map(e => mapNumberToNote(e, 'Sharps')))
 }
 
-
-export const defaultNoteSet = [1, 3, 5, 6, 8, 10, 12]; // A Major Scale
+export const defaultRoot = 1; // Note = 1 = A
+export const majorScale = (root) => [0, 2, 4, 5, 7, 9, 11].map(offset => (offset + root) % 12);
+export const minorScale = (root) => [0, 2, 3, 5, 7, 8, 10].map(offset => (offset + root) % 12)
 export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
 // Tuning should always be expressed numerically and not lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when

@@ -4,21 +4,23 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Alt2ner from './pages/Alt2ner';
 import About from './pages/About';
-import { GlobalContext, defaultTuning, defaultNoteSet } from './GlobalsAndContext'
+import { GlobalContext, defaultTuning, defaultRoot, majorScale } from './GlobalsAndContext'
 
 export default class App extends Component {
   state = {
     mode: 'Sharps',
-    root: 1,
+    root: defaultRoot,
     inlays: true,
-    noteSet: defaultNoteSet,
+    noteSet: majorScale(defaultRoot),
     fretNumbers: true,
+    sidebar: false,
     tuning: defaultTuning,
     updateMode: (mode) => this.setState({ mode }),
     updateRoot: (root) => this.setState({ root }),
     updateInlays: (inlays) => this.setState({ inlays }),
     updateNoteSet: (noteSet) => this.setState({ noteSet }),
     updateFretNumbers: (fretNumbers) => this.setState({ fretNumbers }),
+    updateSidebar: (sidebar) => this.setState({ sidebar }),
     updateTuning: (stringNumber, note) => {
       const tuning = this.state.tuning.slice();
       tuning[stringNumber] = note;

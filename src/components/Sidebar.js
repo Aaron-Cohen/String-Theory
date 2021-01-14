@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
@@ -8,6 +8,7 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 
 import { useLocation } from 'react-router-dom'
+import GlobalContext from '../GlobalsAndContext';
 
 const Nav = styled.div`
   background: #15171c;
@@ -34,7 +35,7 @@ const SidebarNav = styled.nav`
   justify-content: center;
   position: fixed;
   top: 0;
-  left: ${({ sidebar }) => (sidebar ? '0' : '-100%')};
+  left: ${props => (props.visible ? '0' : '-100%')};
   transition: 350ms;
   z-index: 10;
 `;
@@ -44,20 +45,22 @@ const SidebarWrap = styled.div`
 `;
 
 const Sidebar = () => {
-  const [sidebar, setSidebar] = useState(false);
   const path = useLocation().pathname;
+  const context = useContext(GlobalContext);
+  const sidebar = context.sidebar;
+  const showSidebar = (show) => context.updateSidebar(show);
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <Nav>
           <NavIcon to='#'>
-            <FaIcons.FaBars onClick={() => setSidebar(!sidebar)} />
+            <FaIcons.FaBars onClick={() => showSidebar(!sidebar)} />
           </NavIcon>
         </Nav>
-        <SidebarNav sidebar={sidebar}>
+        <SidebarNav visible={sidebar}>
           <SidebarWrap>
             <NavIcon to='#'>
-              <AiIcons.AiOutlineClose onClick={() => setSidebar(!sidebar)} />
+              <AiIcons.AiOutlineClose onClick={() => showSidebar(!sidebar)} />
             </NavIcon>
             {SidebarData().map((item, index) => {
               return (item.page === path) && <SubMenu item={item} key={index} />;
