@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { GlobalContext, mapNoteToNumber } from '../GlobalsAndContext'
+import { GlobalContext } from '../GlobalsAndContext'
 
+// Top level item in menu
 const SidebarLink = styled(Link)`
   display: flex;
   color: #e1e9fc;
@@ -10,7 +11,7 @@ const SidebarLink = styled(Link)`
   align-items: center;
   padding: 20px;
   list-style: none;
-  height: 60px;
+  height: 55px;
   text-decoration: none;
   font-size: 18px;
 
@@ -21,17 +22,13 @@ const SidebarLink = styled(Link)`
   }
 `;
 
+// Holds secondary level choices
 const SidebarPanel = styled.div`
   overflow-y: auto;
-  max-height: 40vh;
+  max-height: 50vh;
 `;
 
-const SidebarLabel = styled.span`
-  margin-left: 16px;
-  padding: 20px;
-  font-size: 16: px;
-`;
-
+// Secondary level options
 const DropdownLink = styled.div`
   background: ${props => (props.selected ? '#632ce4;' : '#414757;')} 
   padding-left: 3rem;
@@ -47,51 +44,37 @@ const DropdownLink = styled.div`
   }
 `;
 
+// Text for secondary level choice options
+const SidebarLabel = styled.span`
+  margin-left: 16px;
+  padding: 20px;
+  font-size: 16: px;
+`;
+
 export default class Submenu extends Component {
   constructor(props) {
-    super(props);
+    super(props);               // Prop of item holds top level menu choice. Defined in SidebarData.js
     this.state = {
-      // List stores what subitems are to be highlighted
-      list: [],
-      showSubNavigation: false
+      list: [],                 // Subitems to be highlighted from item prop
+      showSubNavigation: false  // Whether menu choice is expanded or not
     }
   }
 
-  // By default, highlight first option in each menu item, except for tuning which is editable
+  // By default, highlight first option in each menu item, except for tuning which has isEditable === true
   componentDidMount() {
     let list = new Array(this.props.item.subNav.length).fill(false);
     list[0] = !this.props.item.editable;
     this.setState({ list })
   }
 
-  // Returns false upon bad user input, otherwise updates tuning accordingly
-  updateTuning = (input, index) => {
-    input = input.trim().toLowerCase();
-    if (input.length < 1)
-      return false;
-    if (input.length > 2)
-      input = input.substring(0, 2);
-
-    input = input.toUpperCase().charAt(0) + input.slice(1);
-    const note = mapNoteToNumber(input)
-    if (note < 0)
-      return false;
-
-    // Input is determined to be valid at this point.
-    // Must update context's tuning so fretboard can update,
-    // but the local state must be updated so sidebar reflects
-    // accurate tuning information
-    this.context.updateTuning(index, note);
-    return input;
-  }
-
   render() {
     const item = this.props.item;
+    const forceCollapseSidebar = () => this.context.updateSidebar(false)
     const showSubNavigation = () => this.setState({ showSubNavigation: !this.state.showSubNavigation });
 
     return (
       <>
-        <SidebarLink to={item.path} onClick={showSubNavigation}>
+        <SidebarLink to={item.path} onClick={!item.path ? showSubNavigation : forceCollapseSidebar}>
           <div>
             {item.icon}
             <SidebarLabel>{item.title}</SidebarLabel>
@@ -106,8 +89,8 @@ export default class Submenu extends Component {
               return (
                 <DropdownLink key={index} selected={this.state.list[index] === true}
                   onClick={() => {
-                    item.action(subItem); // Each menu item has a custom action associated with, and updates how its choices
-                    this.setState({       // are selected and colored differently. 
+                    item.action(subItem); // Each menu item has a custom action associated with, and updates
+                    this.setState({       // how its choices are selected and colored differently. 
                       list:
                         item.updateList(this.state.list, index, subItem.title)
                     })
@@ -116,7 +99,8 @@ export default class Submenu extends Component {
                   {subItem.icon}
                   <SidebarLabel contentEditable={item.editable} spellCheck={false}
                     onBlur={(e) => {
-                      e.currentTarget.textContent = this.updateTuning(e.currentTarget.textContent, index) || subItem.title;
+                      e.currentTarget.textContent =
+                        item.updateTuning(e.currentTarget.textContent, index) || subItem.title;
                     }}
                     onKeyDown={(e) => (e.code === 'Enter' || e.code === 'Tab') && (e.currentTarget.blur())}
                   >

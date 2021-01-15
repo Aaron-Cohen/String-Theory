@@ -74,7 +74,24 @@ export const SidebarData = () => {
       ],
       editable: true,
       action: () => { },
-      updateList: (list) => list
+      updateList: (list) => list,
+      updateTuning: (input, index) => {
+        input = input.trim().toLowerCase();
+        if (input.length < 1)
+          return false;
+        if (input.length > 2)
+          input = input.substring(0, 2);
+
+        input = input.toUpperCase().charAt(0) + input.slice(1);
+        const note = mapNoteToNumber(input)
+        if (note < 0)
+          return false;
+
+        // Input is determined to be valid at this point.
+        // Must update context's tuning so fretboard can update.
+        context.updateTuning(index, note);
+        return input;
+      }
     },
     {
       title: 'Tuning Presets',
@@ -185,12 +202,13 @@ export const SidebarData = () => {
       ],
       action: (root) => {
         root = root.title;
-        // Two-part approach: update root, but also recalculate whatever set of notes is present
-        // with relation to new root
+        // Two-part approach: update root, but also recalculate
+        // the selected set of notes with relation to new root
         const note = mapNoteToNumber(root);
-        context.updateRoot(note);
         let difference = context.noteSet[0] - note;
         const newVals = context.noteSet.map(e => (e - difference + 12) % 12);
+
+        context.updateRoot(note);
         context.updateNoteSet(newVals)
       },
       updateList: (list, index) => updateSingleItem(list, index)
@@ -249,32 +267,34 @@ export const SidebarData = () => {
       ],
       action: (selection) => {
         const { root } = context;
-        // Note that only minor chords derived from minor scale. All other flavors to be derived from major scale
+        // Note that only minor chords derived from minor scale. Dim/Aug/Dom chords to be derived from major scale
         const scale = selection.title.includes('Minor') ? minorScale(root) : majorScale(root);
 
-        // Handle scales explicitly before chord logic
-        switch (selection.title) {
-          case 'Natural Major':
-          case 'Natural Minor':
-            return context.updateNoteSet(scale);
-          case 'Major Pentatonic':
-          case 'Minor Pentatonic':
-            return context.updateNoteSet([scale[0], scale[1], scale[2], scale[4], scale[5]]); // Pentatonic is scale with 4 & 7 degree's ommitted
-          case 'Major':
-          case 'Minor':
-            return context.updateNoteSet([scale[0], scale[2], scale[4]]); // Major/minor chords are 1/3/5 of-0 indexed scale
-          case 'Major 7':
-          case 'Minor 7':
-            return context.updateNoteSet([scale[0], scale[2], scale[4], scale[6]]); // Major/minor 7 chords are 1/3/5/7 of-0 indexed scale
-          case 'Dominant 7':
-            return context.updateNoteSet([scale[0], scale[2], scale[4], scale[6] - 1]); // Exploiting that dominant7 is Maj7b5 in jazz notation
-          case 'Augmented':
-            return context.updateNoteSet([scale[0], scale[2], scale[4] + 1]) // Augmented implies sharp fifth
-          case 'Diminished':
-            return context.updateNoteSet([scale[0], scale[2] - 1, scale[4] - 1]) // Augmented implies flat third, fifth
-          default:
-            throw context.updateNoteSet(scale);
+        // Assemble set of notes from scale degreees
+        const noteSet = () => {
+          switch (selection.title) {
+            case 'Major Pentatonic':
+            case 'Minor Pentatonic':
+              return [scale[0], scale[1], scale[2], scale[4], scale[5]]; // Pentatonic is scale with 4 & 7 degree's ommitted
+            case 'Major':
+            case 'Minor':
+              return [scale[0], scale[2], scale[4]]; // Major/minor chords are 1/3/5 of-0 indexed scale
+            case 'Major 7':
+            case 'Minor 7':
+              return [scale[0], scale[2], scale[4], scale[6]]; // Major/minor 7 chords are 1/3/5/7 of-0 indexed scale
+            case 'Dominant 7':
+              return [scale[0], scale[2], scale[4], scale[6] - 1]; // Exploiting that dominant7 is Maj7b5 in jazz notation
+            case 'Augmented':
+              return [scale[0], scale[2], scale[4] + 1] // Augmented implies sharp fifth
+            case 'Diminished':
+              return [scale[0], scale[2] - 1, scale[4] - 1] // Augmented implies flat third, fifth
+            case 'Natural Major':
+            case 'Natural Minor':
+            default:
+              return scale;
+          }
         }
+        return context.updateNoteSet(noteSet());
       },
       updateList: (list, index) => updateSingleItem(list, index)
     },

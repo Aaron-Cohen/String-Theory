@@ -12,7 +12,7 @@ import GlobalContext from '../GlobalsAndContext';
 
 const Nav = styled.div`
   background: #15171c;
-  height: 80px;
+  height: 10vh;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -30,7 +30,7 @@ const NavIcon = styled(Link)`
 const SidebarNav = styled.nav`
   background: #15171c;
   width: 18vw;
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   position: fixed;
