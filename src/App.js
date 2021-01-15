@@ -26,10 +26,9 @@ export default class App extends Component {
     updateTuning: (stringNumber, note) => {
       const tuning = this.state.tuning.slice();
       tuning[stringNumber] = note;
-      this.setState({ tuning })
+      this.setState({ tuning });
     },
-    setTuning: (tuning) => this.setState({ tuning }),
-    resetState: () => this.setState(this.state)
+    setTuning: (tuning) => this.setState({ tuning })
   }
 
   render() {

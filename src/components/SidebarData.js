@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { GlobalContext, mapNoteToNumber, mapNumberToNote, debug, majorScale, minorScale } from '../GlobalsAndContext'
+import { GlobalContext, mapNoteToNumber, mapNumberToNote, majorScale, minorScale } from '../GlobalsAndContext'
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io5';
 import * as RiIcons from 'react-icons/ri';
@@ -191,9 +191,7 @@ export const SidebarData = () => {
         context.updateRoot(note);
         let difference = context.noteSet[0] - note;
         const newVals = context.noteSet.map(e => (e - difference + 12) % 12);
-        debug(newVals)
         context.updateNoteSet(newVals)
-        return true;
       },
       updateList: (list, index) => updateSingleItem(list, index)
     },
@@ -205,11 +203,19 @@ export const SidebarData = () => {
       page: '/Alt2ner',
       subNav: [
         {
-          title: 'Major Scale',
+          title: 'Natural Major',
           icon: <IoIcons.IoNewspaper />,
         },
         {
-          title: 'Minor Scale',
+          title: 'Natural Minor',
+          icon: <IoIcons.IoNewspaper />,
+        },
+        {
+          title: 'Major Pentatonic',
+          icon: <IoIcons.IoNewspaper />,
+        },
+        {
+          title: 'Minor Pentatonic',
           icon: <IoIcons.IoNewspaper />,
         },
         {
@@ -242,49 +248,33 @@ export const SidebarData = () => {
         }
       ],
       action: (selection) => {
-        selection = selection.title;
         const { root } = context;
-        let noteSet = []
-        // Handle scales explicitly before messy chord
-        if (selection.includes('Scale')) {
-          if (selection.includes('Major'))
-            noteSet = majorScale(root);
-          else if (selection.includes('Minor')) {
-            noteSet = minorScale(root);
-          }
+        // Note that only minor chords derived from minor scale. All other flavors to be derived from major scale
+        const scale = selection.title.includes('Minor') ? minorScale(root) : majorScale(root);
 
-          noteSet = noteSet.map(note => note % 12)
-          context.updateNoteSet(noteSet);
-          return;
+        // Handle scales explicitly before chord logic
+        switch (selection.title) {
+          case 'Natural Major':
+          case 'Natural Minor':
+            return context.updateNoteSet(scale);
+          case 'Major Pentatonic':
+          case 'Minor Pentatonic':
+            return context.updateNoteSet([scale[0], scale[1], scale[2], scale[4], scale[5]]); // Pentatonic is scale with 4 & 7 degree's ommitted
+          case 'Major':
+          case 'Minor':
+            return context.updateNoteSet([scale[0], scale[2], scale[4]]); // Major/minor chords are 1/3/5 of-0 indexed scale
+          case 'Major 7':
+          case 'Minor 7':
+            return context.updateNoteSet([scale[0], scale[2], scale[4], scale[6]]); // Major/minor 7 chords are 1/3/5/7 of-0 indexed scale
+          case 'Dominant 7':
+            return context.updateNoteSet([scale[0], scale[2], scale[4], scale[6] - 1]); // Exploiting that dominant7 is Maj7b5 in jazz notation
+          case 'Augmented':
+            return context.updateNoteSet([scale[0], scale[2], scale[4] + 1]) // Augmented implies sharp fifth
+          case 'Diminished':
+            return context.updateNoteSet([scale[0], scale[2] - 1, scale[4] - 1]) // Augmented implies flat third, fifth
+          default:
+            throw context.updateNoteSet(scale);
         }
-
-        // Build other chords as they pertain to a basic major chord
-        let third = root + 4;
-        let fifth = third + 3;
-        let seventh = fifth + 4;
-        if (selection.includes('Diminished')) {
-          third -= 1;
-          fifth -= 1;
-        }
-        else if (selection.includes('Minor')) {
-          third -= 1;
-        }
-        else if (selection.includes('Augmented')) {
-          third += 1;
-          fifth += 1;
-        }
-
-        if (selection.includes('7')) {
-          if (!selection.includes('Major')) // cases of minor, dominant
-            seventh -= 1;
-          noteSet = [root, third, fifth, seventh];
-        }
-        else
-          noteSet = [root, third, fifth];
-
-        noteSet = noteSet.map(note => note % 12)
-        context.updateNoteSet(noteSet);
-        return;
       },
       updateList: (list, index) => updateSingleItem(list, index)
     },
@@ -324,19 +314,20 @@ export const SidebarData = () => {
           context.updateInlays(title.includes('Dot'));
           context.updateFretNumbers(title.includes('Numbers'));
         }
-        return true;
       },
       updateList: (list, index, title) => {
+        const newList = list.slice();
         // Preserve other list options if changing handed-ness setting
         if (title.includes('Handed')) {
-          list = list.slice();
-          list[index] = !list[index];
+          newList[index] = !list[index];
         }
         else {
-          list = new Array(list.length).fill(false);
-          list[index] = true;
+          newList.fill(false);
+          newList[index] = true;
+          // Must preserve handed-ness setting when changing other options
+          newList[newList.length - 1] = list[list.length - 1]
         }
-        return list;
+        return newList;
       }
     },
     {

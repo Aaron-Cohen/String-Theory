@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
+import { GlobalContext, mapNoteToNumber } from '../GlobalsAndContext'
 
 const SidebarLink = styled(Link)`
   display: flex;
@@ -19,6 +19,11 @@ const SidebarLink = styled(Link)`
     border-left: 4px solid #632ce4;
     cursor: pointer;
   }
+`;
+
+const SidebarPanel = styled.div`
+  overflow-y: auto;
+  max-height: 40vh;
 `;
 
 const SidebarLabel = styled.span`
@@ -45,50 +50,44 @@ const DropdownLink = styled.div`
 export default class Submenu extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      // List stores the color selections for every option except for tuning. In tuning, it logs the
-      list: new Array(this.props.item.subNav ? this.props.item.subNav.length : 0),
+      // List stores what subitems are to be highlighted
+      list: [],
       showSubNavigation: false
     }
   }
 
+  // By default, highlight first option in each menu item, except for tuning which is editable
   componentDidMount() {
-    let list = null;
-    if (this.props.item.editable) {
-      list = this.context.tuning
-    }
-    else {
-      list = new Array(this.props.item.subNav ? this.props.item.subNav.length : 1);
-      list.fill(false);
-      list[0] = true;
-    }
+    let list = new Array(this.props.item.subNav.length).fill(false);
+    list[0] = !this.props.item.editable;
     this.setState({ list })
+  }
+
+  // Returns false upon bad user input, otherwise updates tuning accordingly
+  updateTuning = (input, index) => {
+    input = input.trim().toLowerCase();
+    if (input.length < 1)
+      return false;
+    if (input.length > 2)
+      input = input.substring(0, 2);
+
+    input = input.toUpperCase().charAt(0) + input.slice(1);
+    const note = mapNoteToNumber(input)
+    if (note < 0)
+      return false;
+
+    // Input is determined to be valid at this point.
+    // Must update context's tuning so fretboard can update,
+    // but the local state must be updated so sidebar reflects
+    // accurate tuning information
+    this.context.updateTuning(index, note);
+    return input;
   }
 
   render() {
     const item = this.props.item;
     const showSubNavigation = () => this.setState({ showSubNavigation: !this.state.showSubNavigation });
-
-    const updateTuning = (input, index) => {
-      input = input.trim().toLowerCase();
-      if (input.length < 1)
-        return false;
-      if (input.length > 2)
-        input = input.substring(0, 2);
-
-      input = input.toUpperCase().charAt(0) + input.slice(1);
-      const note = mapNoteToNumber(input)
-      if (note < 0)
-        return false;
-
-      this.context.tuning[index] = note;
-      const list = this.state.list.slice();
-      list[index] = input;
-      this.setState({ list });
-
-      return input;
-    }
 
     return (
       <>
@@ -101,7 +100,7 @@ export default class Submenu extends Component {
             {this.state.showSubNavigation ? item.iconOpened : item.iconClosed}
           </div>
         </SidebarLink>
-        <div style={{ overflowY: 'auto', maxHeight: '40vh' }}>
+        <SidebarPanel>
           {this.state.showSubNavigation &&
             item.subNav.map((subItem, index) => {
               return (
@@ -117,8 +116,7 @@ export default class Submenu extends Component {
                   {subItem.icon}
                   <SidebarLabel contentEditable={item.editable} spellCheck={false}
                     onBlur={(e) => {
-                      e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, index) || subItem.title;
-                      this.context.resetState(); // update fretboard dynamically
+                      e.currentTarget.textContent = this.updateTuning(e.currentTarget.textContent, index) || subItem.title;
                     }}
                     onKeyDown={(e) => (e.code === 'Enter' || e.code === 'Tab') && (e.currentTarget.blur())}
                   >
@@ -128,21 +126,9 @@ export default class Submenu extends Component {
               );
             })
           }
-        </div >
+        </SidebarPanel>
       </ >
     )
   }
 }
 Submenu.contextType = GlobalContext
-
-/*
-Todo list:
-1) If root note is G# or Ab, make it switch to the other when mode changes
-  Or, take away sharps/flat mode from user and manually do it depending on scale.
-9) Clean up code
-10) Custom ('select as many notes as you want')
-11.5) Put all styled div's in one file and pull for reuse
-12) re-add hidden ab/g# but have no default root, and make default scale chromatic- that is also default scale option
-13) info page
-15) something funky happens if you do a# major in # mode
-*/

@@ -125,15 +125,11 @@ export const mapNumberToNote = (note, accidental) => {
     }
 }
 
-export const debug = (arr) => {
-    console.log(arr.map(e => mapNumberToNote(e, 'Sharps')))
-}
-
 export const defaultRoot = 1; // Note = 1 = A
 export const majorScale = (root) => [0, 2, 4, 5, 7, 9, 11].map(offset => (offset + root) % 12);
-export const minorScale = (root) => [0, 2, 3, 5, 7, 8, 10].map(offset => (offset + root) % 12)
+export const minorScale = (root) => [0, 2, 3, 5, 7, 8, 10].map(offset => (offset + root) % 12);
 export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
-// Tuning should always be expressed numerically and not lexigraphically.
+// Tuning should always be expressed numerically and never lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when
 // global context changes.
 const defaultTuningMap = () => {
@@ -143,7 +139,7 @@ const defaultTuningMap = () => {
     })
     return tuning;
 }
-export const defaultTuning = defaultTuningMap();
 export const fretCount = 21;
+export const defaultTuning = defaultTuningMap();
 export const GlobalContext = React.createContext();
 export default GlobalContext;

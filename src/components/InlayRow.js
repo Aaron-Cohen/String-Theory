@@ -10,7 +10,7 @@ export const InlayRow = (props) => {
     for (let i = 0; i <= fretCount; i++)
         frets.push(<Inlay fret={i} text={props.text ? i : ''} />);
 
-    frets.splice(1, 0, <Nut hideNut={props.hideNut} />);
+    frets.splice(1, 0, <Nut hideNut={props.text} />);
     if (context.lefty)
         frets.reverse();
 

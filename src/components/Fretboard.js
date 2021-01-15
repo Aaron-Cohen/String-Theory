@@ -16,7 +16,7 @@ const Fretboard = () => {
       <FretRow rootNote={context.tuning[3]} />
       <FretRow rootNote={context.tuning[4]} />
       <FretRow rootNote={context.tuning[5]} />
-      { context.fretNumbers && <InlayRow text={true} hideNut={true} />}
+      { context.fretNumbers && <InlayRow text={true} />}
     </Board>
   )
 }
