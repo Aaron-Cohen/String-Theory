@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
 import { Link } from 'react-router-dom';
 import { GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
 
@@ -56,7 +55,7 @@ export default class Submenu extends Component {
 
   componentDidMount() {
     let list = null;
-    if (this.props.item.disableOneHot) {
+    if (this.props.item.editable) {
       list = this.context.tuning
     }
     else {
@@ -70,20 +69,6 @@ export default class Submenu extends Component {
   render() {
     const item = this.props.item;
     const showSubNavigation = () => this.setState({ showSubNavigation: !this.state.showSubNavigation });
-
-    /**
-     * One-hot colorer for submenu choices.
-     * If index is positive or zero, colors specified index, resets other indicies.
-     * If index is negative, no choices get colored.
-     */
-    const updateColor = (index) => {
-      const list = new Array(this.state.list.length).fill(false)
-      if (index >= 0)
-        list[index] = true
-
-      this.setState({ list })
-      return true
-    }
 
     const updateTuning = (newContent, originalContent, index) => {
       newContent = newContent.trim().toLowerCase();
@@ -126,18 +111,27 @@ export default class Submenu extends Component {
               const originalContent = subItem.title;
               return (
                 <DropdownLink key={index} selected={this.state.list[index] === true}
-                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem)} >
+                  onClick={() => {
+                    // Each menu item has a custom action associated with, and updates how its choices
+                    // are selected and colored differently. 
+                    item.action(subItem);
+                    this.setState({
+                      list:
+                        item.updateList(this.state.list, index, subItem.title)
+                    })
+                  }}
+                >
                   {subItem.icon}
-                  <SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
+                  <SidebarLabel contentEditable={item.editable} spellCheck={false}
                     onBlur={(e) => {
-                      if (item.disableOneHot) {
+                      if (item.editable) {
                         e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, originalContent, index);
                         item.action();
                       }
                     }}
                     onKeyDown={(e) => (e.code === 'Enter' || e.code === 'Tab') && (e.currentTarget.blur())}
                   >
-                    {item.disableOneHot ? mapNumberToNote(this.context.tuning[index], this.context.mode) : originalContent}
+                    {item.editable ? mapNumberToNote(this.context.tuning[index], this.context.mode) : originalContent}
                   </SidebarLabel>
                 </DropdownLink>
               );
@@ -154,10 +148,8 @@ Submenu.contextType = GlobalContext
 Todo list:
 1) If root note is G# or Ab, make it switch to the other when mode changes
   Or, take away sharps/flat mode from user and manually do it depending on scale.
-2) Slide fretboard right when sidebar opens
 9) Clean up code
 10) Custom ('select as many notes as you want')
-11) Hide nut?
 11.5) Put all styled div's in one file and pull for reuse
 12) re-add hidden ab/g# but have no default root, and make default scale chromatic- that is also default scale option
 13) info page

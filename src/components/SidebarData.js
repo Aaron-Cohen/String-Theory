@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { GlobalContext, mapNoteToNumber, mapNumberToNote, debug, majorScale, minorScale } from '../GlobalsAndContext'
 import * as FaIcons from 'react-icons/fa';
-import * as IoIcons from 'react-icons/io';
+import * as IoIcons from 'react-icons/io5';
 import * as RiIcons from 'react-icons/ri';
 import * as GiIcons from 'react-icons/gi';
 import * as CgIcons from 'react-icons/cg';
@@ -25,7 +25,8 @@ export const SidebarData = () => {
           icon: <CgIcons.CgTrendingDown />,
         }
       ],
-      action: (choice) => context.updateMode(choice.title)
+      action: (choice) => context.updateMode(choice.title),
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Custom Tuning',
@@ -71,8 +72,9 @@ export const SidebarData = () => {
           icon: <GiIcons.GiTunePitch />
         }
       ],
-      disableOneHot: true,
-      action: () => context.resetState() // necessary to rerender fretboard dynamically
+      editable: true,
+      action: () => context.resetState(), // Necessary to rerender fretboard dynamically
+      updateList: (list) => list
     },
     {
       title: 'Tuning Presets',
@@ -122,7 +124,8 @@ export const SidebarData = () => {
           icon: <FaIcons.FaUserAlt />
         },
       ],
-      action: (info) => context.setTuning(info.tuning.map(e => mapNoteToNumber(e)))
+      action: (info) => context.setTuning(info.tuning.map(e => mapNoteToNumber(e))),
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Root Note / Key',
@@ -191,7 +194,8 @@ export const SidebarData = () => {
         debug(newVals)
         context.updateNoteSet(newVals)
         return true;
-      }
+      },
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Pattern Type',
@@ -202,39 +206,39 @@ export const SidebarData = () => {
       subNav: [
         {
           title: 'Major Scale',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Minor Scale',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Major',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Major 7',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Minor',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Minor 7',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Dominant 7',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Augmented',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Diminished',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         }
       ],
       action: (selection) => {
@@ -278,11 +282,11 @@ export const SidebarData = () => {
         else
           noteSet = [root, third, fifth];
 
-
         noteSet = noteSet.map(note => note % 12)
         context.updateNoteSet(noteSet);
         return;
-      }
+      },
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Settings',
@@ -306,18 +310,38 @@ export const SidebarData = () => {
         {
           title: 'Nothing',
           icon: <FaIcons.FaClipboardList />
+        },
+        {
+          title: context.lefty ? 'Left Handed' : 'Right Handed',
+          icon: context.lefty ? <IoIcons.IoHandLeft /> : <IoIcons.IoHandRight />,
         }
       ],
       action: (setting) => {
         const { title } = setting;
-        context.updateInlays(title.includes('Dot'))
-        context.updateFretNumbers(title.includes('Numbers'))
+        if (title.includes('Handed'))
+          context.updateLefty(!context.lefty);
+        else {
+          context.updateInlays(title.includes('Dot'));
+          context.updateFretNumbers(title.includes('Numbers'));
+        }
         return true;
+      },
+      updateList: (list, index, title) => {
+        // Preserve other list options if changing handed-ness setting
+        if (title.includes('Handed')) {
+          list = list.slice();
+          list[index] = !list[index];
+        }
+        else {
+          list = new Array(list.length).fill(false);
+          list[index] = true;
+        }
+        return list;
       }
     },
     {
       title: 'Project Info',
-      icon: <IoIcons.IoMdHelpCircle />,
+      icon: <IoIcons.IoHelpCircle />,
       path: '/About',
       page: '/Alt2ner',
       subNav: []
@@ -331,3 +355,14 @@ export const SidebarData = () => {
     }
   ]
 };
+
+/**
+  Returns a boolean array of same length as
+  input list containing all falses, but with
+  a true at index of second parameter
+*/
+const updateSingleItem = (list, index) => {
+  list = new Array(list.length).fill(false);
+  list[index] = true;
+  return list;
+}

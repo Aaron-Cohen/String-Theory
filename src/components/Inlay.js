@@ -1,58 +1,57 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-export default class Fret extends Component {
-    render() {
-        // Case where there is text displayed and not dots 
-        if (this.props.text)
-            return <Button fret={this.props.fret}> {this.props.text} </Button>
+export const Inlay = (props) => {
+    // Case where there is text displayed and not dots 
+    if (props.text)
+        return <Box fret={props.fret} style={{ fontSize: '15px' }}> {props.text} </Box>
 
-        // Case of double dots on octave
-        if (this.props.fret === 12)
-            return (<Button fret={this.props.fret}> {
-                <div style={{ fontSize: '0' }}>
-                    <div style={{ margin: '4px' }}><Dot /></div>
-                    <div style={{ margin: '4px' }}><Dot /></div>
+    // Case of double dots on octave
+    if (props.fret === 12)
+        return (<Box fret={props.fret}>
+            {
+                <div>
+                    <div ><Dot /></div>
+                    <div ><Dot /></div>
                 </div>
-            } </Button >)
-        // Edge case where no dots on odd fret b/c 12th fret gets double dots
-        else if (this.props.fret === 11 || this.props.fret === 13)
-            return <Button fret={this.props.fret}></Button>
-        // Case of single dots
-        else if (this.props.fret % 2 && this.props.fret > 1)
-            return (<Button fret={this.props.fret}> <Dot /> </Button >)
-        // Case of no dots
-        else
-            return <Button fret={this.props.fret}> </Button>
-    }
+            }
+        </Box >)
+    // Edge case where no dots on odd fret b/c 12th fret gets double dots
+    else if (props.fret === 11 || props.fret === 13)
+        return <Box fret={props.fret}></Box>
+    // Case of single dots
+    else if (props.fret % 2 && props.fret > 1)
+        return (<Box fret={props.fret}> <Dot /> </Box >)
+    // Case of no dots
+    else
+        return <Box fret={props.fret}> </Box>
 }
+export default Inlay;
 
-const Dot = () => {
-    var circleStyle = {
+const Dot = () => (
+    <div style={{
         padding: 4,
         display: "inline-block",
         backgroundColor: "black",
         borderRadius: "50%",
-    };
-    return (
-        <div style={circleStyle}>
-        </div>
-    );
-};
+    }} />);
 
-const Button = styled.button`
+const Box = styled.div`
     box-shadow:inset 0px 1px 0px 0px #ffffff;
 	background-color: transparent;
 	border-radius:6px;
 	border:3px solid #dcdcdc;
-	display:inline-block;
+	display: flex;
 	color:#666666;
 	font-family:Arial;
-	font-size:15px;
+	font-size: 12px;
     font-weight:bold;
-    height: '5vh';
+    height: 5vh;
     width: ${props => (101 - props.fret * 3 + 'vw')};
     minWidth: 2ch;
     overflow:
-	text-shadow:0px 1px 0px #ffffff;
+    text-shadow:0px 1px 0px #ffffff;
+    display: flex;
+  	justify-content: center;
+ 	align-items: center;
 `;

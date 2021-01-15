@@ -1,23 +1,26 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Inlay from './Inlay.js'
 import Nut from './Nut'
-import { fretCount } from '../GlobalsAndContext.js'
+import { fretCount, GlobalContext } from '../GlobalsAndContext.js'
 
-export default class InlayRow extends Component {
-    render() {
-        const frets = []
-        for (let i = 0; i <= fretCount; i++)
-            frets.push(<Inlay fret={i} text={this.props.text ? i : ''} />)
+export const InlayRow = (props) => {
+    const context = useContext(GlobalContext);
+    const frets = [];
+    for (let i = 0; i <= fretCount; i++)
+        frets.push(<Inlay fret={i} text={props.text ? i : ''} />);
 
-        frets.splice(1, 0, <Nut hideNut={this.props.hideNut} />)
-        return (
-            <Row>
-                {frets}
-            </Row>
-        )
-    }
+    frets.splice(1, 0, <Nut hideNut={props.hideNut} />);
+    if (context.lefty)
+        frets.reverse();
+
+    return (
+        <Row>
+            {frets}
+        </Row>
+    );
 }
+export default InlayRow;
 
 const Row = styled.div`
   display: flex; 

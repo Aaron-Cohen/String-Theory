@@ -14,6 +14,7 @@ export default class App extends Component {
     noteSet: majorScale(defaultRoot),
     fretNumbers: true,
     sidebar: false,
+    lefty: false,
     tuning: defaultTuning,
     updateMode: (mode) => this.setState({ mode }),
     updateRoot: (root) => this.setState({ root }),
@@ -21,6 +22,7 @@ export default class App extends Component {
     updateNoteSet: (noteSet) => this.setState({ noteSet }),
     updateFretNumbers: (fretNumbers) => this.setState({ fretNumbers }),
     updateSidebar: (sidebar) => this.setState({ sidebar }),
+    updateLefty: (lefty) => this.setState({ lefty }),
     updateTuning: (stringNumber, note) => {
       const tuning = this.state.tuning.slice();
       tuning[stringNumber] = note;
