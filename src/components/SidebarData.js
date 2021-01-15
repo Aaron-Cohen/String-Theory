@@ -73,7 +73,7 @@ export const SidebarData = () => {
         }
       ],
       editable: true,
-      action: () => context.resetState(), // Necessary to rerender fretboard dynamically
+      action: () => { },
       updateList: (list) => list
     },
     {

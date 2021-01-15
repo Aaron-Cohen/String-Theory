@@ -70,28 +70,24 @@ export default class Submenu extends Component {
     const item = this.props.item;
     const showSubNavigation = () => this.setState({ showSubNavigation: !this.state.showSubNavigation });
 
-    const updateTuning = (newContent, originalContent, index) => {
-      newContent = newContent.trim().toLowerCase();
-      if (newContent.length < 1) {
-        return originalContent;
-      }
-      else if (newContent.length > 2) {
-        newContent = newContent.substring(0, 2);
-      }
+    const updateTuning = (input, index) => {
+      input = input.trim().toLowerCase();
+      if (input.length < 1)
+        return false;
+      if (input.length > 2)
+        input = input.substring(0, 2);
 
-      newContent = newContent.toUpperCase().charAt(0) + newContent.slice(1)
-
-      // Number must map to a note
-      const note = mapNoteToNumber(newContent)
+      input = input.toUpperCase().charAt(0) + input.slice(1);
+      const note = mapNoteToNumber(input)
       if (note < 0)
-        return originalContent;
+        return false;
 
       this.context.tuning[index] = note;
       const list = this.state.list.slice();
-      list[index] = newContent;
+      list[index] = input;
       this.setState({ list });
 
-      return newContent;
+      return input;
     }
 
     return (
@@ -108,14 +104,11 @@ export default class Submenu extends Component {
         <div style={{ overflowY: 'auto', maxHeight: '40vh' }}>
           {this.state.showSubNavigation &&
             item.subNav.map((subItem, index) => {
-              const originalContent = subItem.title;
               return (
                 <DropdownLink key={index} selected={this.state.list[index] === true}
                   onClick={() => {
-                    // Each menu item has a custom action associated with, and updates how its choices
-                    // are selected and colored differently. 
-                    item.action(subItem);
-                    this.setState({
+                    item.action(subItem); // Each menu item has a custom action associated with, and updates how its choices
+                    this.setState({       // are selected and colored differently. 
                       list:
                         item.updateList(this.state.list, index, subItem.title)
                     })
@@ -124,14 +117,12 @@ export default class Submenu extends Component {
                   {subItem.icon}
                   <SidebarLabel contentEditable={item.editable} spellCheck={false}
                     onBlur={(e) => {
-                      if (item.editable) {
-                        e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, originalContent, index);
-                        item.action();
-                      }
+                      e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, index) || subItem.title;
+                      this.context.resetState(); // update fretboard dynamically
                     }}
                     onKeyDown={(e) => (e.code === 'Enter' || e.code === 'Tab') && (e.currentTarget.blur())}
                   >
-                    {item.editable ? mapNumberToNote(this.context.tuning[index], this.context.mode) : originalContent}
+                    {subItem.title}
                   </SidebarLabel>
                 </DropdownLink>
               );
