@@ -153,6 +153,5 @@ Todo list:
 11.5) Put all styled div's in one file and pull for reuse
 12) re-add hidden ab/g# but have no default root, and make default scale chromatic- that is also default scale option
 13) info page
-14) lefty mode
 15) something funky happens if you do a# major in # mode
 */

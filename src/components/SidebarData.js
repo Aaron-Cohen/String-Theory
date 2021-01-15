@@ -312,8 +312,8 @@ export const SidebarData = () => {
           icon: <FaIcons.FaClipboardList />
         },
         {
-          title: context.lefty ? 'Left Handed' : 'Right Handed',
-          icon: context.lefty ? <IoIcons.IoHandLeft /> : <IoIcons.IoHandRight />,
+          title: 'Left Handed',
+          icon: <FaIcons.FaClipboardList />,
         }
       ],
       action: (setting) => {
