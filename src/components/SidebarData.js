@@ -14,7 +14,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaSlidersH />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/Alt2ner',
+      page: '/StringTheory',
       subNav: [
         {
           title: 'Sharps',
@@ -33,7 +33,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaGuitar />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/Alt2ner',
+      page: '/StringTheory',
       subNav: [
         {
           title: mapNumberToNote(context.tuning[0], context.mode),
@@ -81,7 +81,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaUserCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/Alt2ner',
+      page: '/StringTheory',
       subNav: [
         {
           title: 'Standard',
@@ -132,7 +132,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaSortAlphaDown />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/Alt2ner',
+      page: '/StringTheory',
       subNav: [
         {
           title: 'A',
@@ -200,7 +200,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaWrench />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/Alt2ner',
+      page: '/StringTheory',
       subNav: [
         {
           title: 'Natural Major',
@@ -283,7 +283,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/Alt2ner',
+      page: '/StringTheory',
       subNav: [
         {
           title: 'Dots / Fret Numbers',
@@ -334,13 +334,13 @@ export const SidebarData = () => {
       title: 'Project Info',
       icon: <IoIcons.IoHelpCircle />,
       path: '/About',
-      page: '/Alt2ner',
+      page: '/StringTheory',
       subNav: []
     },
     {
-      title: 'Return to Guitar',
+      title: 'String Theory',
       icon: <FaIcons.FaGuitar />,
-      path: '/Alt2ner',
+      path: '/StringTheory',
       page: '/About',
       subNav: []
     }

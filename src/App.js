@@ -2,7 +2,7 @@ import './App.css';
 import Sidebar from './components/Sidebar';
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Alt2ner from './pages/Alt2ner';
+import StringTheory from './pages/StringTheory';
 import About from './pages/About';
 import { GlobalContext, defaultTuning, defaultRoot, majorScale } from './GlobalsAndContext'
 
@@ -38,9 +38,9 @@ export default class App extends Component {
           <Sidebar />
           <Switch>
             <Route exact path="/">
-              <Redirect to="/Alt2ner" />
+              <Redirect to="/StringTheory" />
             </Route>
-            <Route path='/Alt2ner' exact component={Alt2ner} />
+            <Route path='/StringTheory' exact component={StringTheory} />
             <Route path='/About' exact component={About} />
           </Switch>
         </Router>
