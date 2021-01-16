@@ -5,50 +5,51 @@ const About = () => {
   return (
     <Page>
       <div>
-        <h2 >About String Theory</h2>
-        <Welcome>
-          <Body>
-            <br />
-            <Text>
-              This is my first project using the React Javascript framework.
-            </Text>
-            <Text>
-              I built this program to make alternative tunings on guitar more accessible without
-              needing a strong music theory background.
-            </Text>
-
-            <p>
-              {"You can find my source code "}
-              <a href="https://github.com/Aaron-Cohen/StringTheory" target="_blank" rel="noreferrer" style={{ display: 'inline' }}>
-                {"here,"}
-              </a>{" and if you have any feedback, please reach out to me on github in the link above."}
-            </p></Body>
-        </Welcome>
+        <div style={{ textAlign: 'center', marginBottom: '5%' }}>
+          <h2 >About String Theory</h2>
+        </div>
+        <Body>
+          <Text>
+            I built this program to make alternative tunings on guitar
+            more accessible without needing a strong music theory background.
+            For more information, check out the Wikipedia page for
+              <Link to="https://en.wikipedia.org/wiki/Scordatura" text="Scordatura." />
+          </Text>
+          <Text>
+            This is my first project using the React framework. You can find the source code
+              <Link to="https://github.com/Aaron-Cohen/StringTheory" text="here." />
+            If you have any improvements to the source code, or notice any bugs, please reach out to me on my
+            <Link to="https://www.linkedin.com/in/-aaroncohen/" text="LinkedIn." />
+          </Text>
+          <Text>
+            Thank you for using String Theory. Happy strumming!
+          </Text>
+        </Body>
       </div>
     </Page>
   );
 };
 
+const Link = (props) => (
+  <a href={props.to} target="_blank" rel="noreferrer" style={{ display: 'inline', color: 'blue', margin: '.25em' }}>
+    {props.text}
+  </a>
+)
+
 const Body = styled.div`
   display: inline;
-  margin-top: 2%;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  margin-top: 15px;
+  font-size: 2rem;
 `
 
 const Text = styled.p`
-  margin: 5px;
-`
-
-const Welcome = styled.div`
-  margin-top: 2%;
-  word-wrap: normal;
-  font-size: 2.5rem;
+  margin: 33px;
+  line-height: 2.5rem;
 `
 
 const Page = styled.div`
-  display: flex;
-  margin: 5% 15% 5% 20%;
+  display: inline-flex;
+  margin: 4% 15% 5% 20%;
   justify-content: center;
   align-content: center;
   font-size: 3rem;
