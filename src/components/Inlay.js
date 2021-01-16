@@ -53,7 +53,6 @@ const Box = styled.div`
     height: 5vh;
     width: ${props => (101 - props.fret * 3 + 'vw')};
     minWidth: 2ch;
-    overflow:
     text-shadow:0px 1px 0px #ffffff;
     display: flex;
   	justify-content: center;
