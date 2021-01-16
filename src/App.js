@@ -38,9 +38,9 @@ export default class App extends Component {
           <Sidebar />
           <Switch>
             <Route exact path="/">
-              <Redirect to="/StringTheory" />
+              <Redirect to="/String-Theory" />
             </Route>
-            <Route path='/StringTheory' exact component={StringTheory} />
+            <Route path='/String-Theory' exact component={StringTheory} />
             <Route path='/About' exact component={About} />
           </Switch>
         </Router>
