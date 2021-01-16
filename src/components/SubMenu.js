@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
 import { Link } from 'react-router-dom';
-import { defaultTuningArray, GlobalContext, mapNoteToNumber, mapNumberToNote } from '../GlobalsAndContext'
+import { GlobalContext } from '../GlobalsAndContext'
 
+// Top level item in menu
 const SidebarLink = styled(Link)`
   display: flex;
   color: #e1e9fc;
@@ -11,7 +11,7 @@ const SidebarLink = styled(Link)`
   align-items: center;
   padding: 20px;
   list-style: none;
-  height: 60px;
+  height: 55px;
   text-decoration: none;
   font-size: 18px;
 
@@ -22,12 +22,13 @@ const SidebarLink = styled(Link)`
   }
 `;
 
-const SidebarLabel = styled.span`
-  margin-left: 16px;
-  padding: 20px;
-  font-size: 16: px;
+// Holds secondary level choices
+const SidebarPanel = styled.div`
+  overflow-y: auto;
+  max-height: 50vh;
 `;
 
+// Secondary level options
 const DropdownLink = styled.div`
   background: ${props => (props.selected ? '#632ce4;' : '#414757;')} 
   padding-left: 3rem;
@@ -43,75 +44,37 @@ const DropdownLink = styled.div`
   }
 `;
 
+// Text for secondary level choice options
+const SidebarLabel = styled.span`
+  margin-left: 16px;
+  padding: 20px;
+  font-size: 16: px;
+`;
+
 export default class Submenu extends Component {
   constructor(props) {
-    super(props);
-
+    super(props);               // Prop of item holds top level menu choice. Defined in SidebarData.js
     this.state = {
-      // List stores the color selections for every option except for tuning. In tuning, it logs the
-      list: new Array(this.props.item.subNav ? this.props.item.subNav.length : 0),
-      showSubNavigation: false
+      list: [],                 // Subitems to be highlighted from item prop
+      showSubNavigation: false  // Whether menu choice is expanded or not
     }
   }
 
+  // By default, highlight first option in each menu item, except for tuning which has isEditable === true
   componentDidMount() {
-    let list = null;
-    if (this.props.item.disableOneHot) {
-      list = defaultTuningArray
-    }
-    else {
-      list = new Array(this.props.item.subNav ? this.props.item.subNav.length : 1);
-      list.fill(false);
-      list[0] = true;
-    }
+    let list = new Array(this.props.item.subNav.length).fill(false);
+    list[0] = !this.props.item.editable;
     this.setState({ list })
   }
 
   render() {
     const item = this.props.item;
+    const forceCollapseSidebar = () => this.context.updateSidebar(false)
     const showSubNavigation = () => this.setState({ showSubNavigation: !this.state.showSubNavigation });
-
-    /**
-     * One-hot colorer for submenu choices.
-     * If index is positive or zero, colors specified index, resets other indicies.
-     * If index is negative, no choices get colored.
-     */
-    const updateColor = (index) => {
-      const list = new Array(this.state.list.length).fill(false)
-      if (index >= 0)
-        list[index] = true
-
-      this.setState({ list })
-      return true
-    }
-
-    const updateTuning = (newContent, originalContent, index) => {
-      newContent = newContent.trim().toLowerCase();
-      if (newContent.length < 1) {
-        return originalContent;
-      }
-      else if (newContent.length > 2) {
-        newContent = newContent.substring(0, 2);
-      }
-
-      newContent = newContent.toUpperCase().charAt(0) + newContent.slice(1)
-
-      // Number must map to a note
-      const note = mapNoteToNumber(newContent)
-      if (note < 0)
-        return originalContent;
-
-      this.context.tuning[index] = note;
-      const list = this.state.list.slice();
-      list[index] = newContent;
-      this.setState({ list });
-
-      return newContent;
-    }
 
     return (
       <>
-        <SidebarLink to={item.path} onClick={showSubNavigation}>
+        <SidebarLink to={item.path} onClick={!item.path ? showSubNavigation : forceCollapseSidebar}>
           <div>
             {item.icon}
             <SidebarLabel>{item.title}</SidebarLabel>
@@ -120,45 +83,36 @@ export default class Submenu extends Component {
             {this.state.showSubNavigation ? item.iconOpened : item.iconClosed}
           </div>
         </SidebarLink>
-        <div style={{ overflowY: 'auto', maxHeight: '40vh' }}>
+        <SidebarPanel>
           {this.state.showSubNavigation &&
             item.subNav.map((subItem, index) => {
-              const originalContent = subItem.title;
               return (
                 <DropdownLink key={index} selected={this.state.list[index] === true}
-                  onClick={() => (!item.disableOneHot && updateColor(index)) && item.action(subItem) && (this.context.root = 3)} >
+                  onClick={() => {
+                    item.action(subItem); // Each menu item has a custom action associated with, and updates
+                    this.setState({       // how its choices are selected and colored differently. 
+                      list:
+                        item.updateList(this.state.list, index, subItem.title)
+                    })
+                  }}
+                >
                   {subItem.icon}
-                  <SidebarLabel contentEditable={item.disableOneHot} spellCheck={false}
+                  <SidebarLabel contentEditable={item.editable} spellCheck={false}
                     onBlur={(e) => {
-                      if (item.disableOneHot) {
-                        e.currentTarget.textContent = updateTuning(e.currentTarget.textContent, originalContent, index);
-                        item.action();
-                      }
+                      e.currentTarget.textContent =
+                        item.updateTuning(e.currentTarget.textContent, index) || subItem.title;
                     }}
                     onKeyDown={(e) => (e.code === 'Enter' || e.code === 'Tab') && (e.currentTarget.blur())}
                   >
-                    {item.disableOneHot ? mapNumberToNote(this.context.tuning[index], this.context.mode) : originalContent}
+                    {subItem.title}
                   </SidebarLabel>
                 </DropdownLink>
               );
             })
           }
-        </div >
+        </SidebarPanel>
       </ >
     )
   }
 }
 Submenu.contextType = GlobalContext
-
-/*
-Todo list:
-1) If root note is G# or Ab, make it switch to the other when mode changes
-  Or, take away sharps/flat mode from user and manually do it depending on scale.
-2) Slide fretboard right when sidebar opens
-3) Update fretboard while sidebar is open
-5) Nut for open fret
-7) Scrollbars when not needed in sidebar
-9) Clean up code
-10) Custom ('select as many notes as you want')
-12) re-add hidden ab/g# but have no default root, and make default scale chromatic- that is also default scale option
-*/

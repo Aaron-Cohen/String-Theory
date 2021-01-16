@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { GlobalContext, mapNoteToNumber, mapNumberToNote, debug } from '../GlobalsAndContext'
+import { GlobalContext, mapNoteToNumber, mapNumberToNote, majorScale, minorScale } from '../GlobalsAndContext'
 import * as FaIcons from 'react-icons/fa';
-import * as IoIcons from 'react-icons/io';
+import * as IoIcons from 'react-icons/io5';
 import * as RiIcons from 'react-icons/ri';
 import * as GiIcons from 'react-icons/gi';
 import * as CgIcons from 'react-icons/cg';
@@ -14,6 +14,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaSlidersH />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/StringTheory',
       subNav: [
         {
           title: 'Sharps',
@@ -24,13 +25,15 @@ export const SidebarData = () => {
           icon: <CgIcons.CgTrendingDown />,
         }
       ],
-      action: (choice) => context.updateMode(choice.title)
+      action: (choice) => context.updateMode(choice.title),
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Custom Tuning',
       icon: <FaIcons.FaGuitar />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/StringTheory',
       subNav: [
         {
           title: mapNumberToNote(context.tuning[0], context.mode),
@@ -69,15 +72,33 @@ export const SidebarData = () => {
           icon: <GiIcons.GiTunePitch />
         }
       ],
-      disableOneHot: true,
-      action: () => context.resetState() // necessary to rerender fretboard dynamically
+      editable: true,
+      action: () => { },
+      updateList: (list) => list,
+      updateTuning: (input, index) => {
+        input = input.trim().toLowerCase();
+        if (input.length < 1)
+          return false;
+        if (input.length > 2)
+          input = input.substring(0, 2);
+
+        input = input.toUpperCase().charAt(0) + input.slice(1);
+        const note = mapNoteToNumber(input)
+        if (note < 0)
+          return false;
+
+        // Input is determined to be valid at this point.
+        // Must update context's tuning so fretboard can update.
+        context.updateTuning(index, note);
+        return input;
+      }
     },
     {
       title: 'Tuning Presets',
-      path: '/team',
       icon: <FaIcons.FaUserCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/StringTheory',
       subNav: [
         {
           title: 'Standard',
@@ -120,13 +141,15 @@ export const SidebarData = () => {
           icon: <FaIcons.FaUserAlt />
         },
       ],
-      action: (info) => context.setTuning(info.tuning.map(e => mapNoteToNumber(e)))
+      action: (info) => context.setTuning(info.tuning.map(e => mapNoteToNumber(e))),
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Root Note / Key',
       icon: <FaIcons.FaSortAlphaDown />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/StringTheory',
       subNav: [
         {
           title: 'A',
@@ -179,112 +202,108 @@ export const SidebarData = () => {
       ],
       action: (root) => {
         root = root.title;
-        // Two-part approach: update root, but also recalculate whatever set of notes is present
-        // with relation to new root
+        // Two-part approach: update root, but also recalculate
+        // the selected set of notes with relation to new root
         const note = mapNoteToNumber(root);
-        context.updateRoot(note);
         let difference = context.noteSet[0] - note;
         const newVals = context.noteSet.map(e => (e - difference + 12) % 12);
-        debug(newVals)
+
+        context.updateRoot(note);
         context.updateNoteSet(newVals)
-        return true;
-      }
+      },
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Pattern Type',
       icon: <FaIcons.FaWrench />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/StringTheory',
       subNav: [
         {
-          title: 'Major Scale',
-          icon: <IoIcons.IoIosPaper />,
+          title: 'Natural Major',
+          icon: <IoIcons.IoNewspaper />,
         },
         {
-          title: 'Minor Scale',
-          icon: <IoIcons.IoIosPaper />,
+          title: 'Natural Minor',
+          icon: <IoIcons.IoNewspaper />,
+        },
+        {
+          title: 'Major Pentatonic',
+          icon: <IoIcons.IoNewspaper />,
+        },
+        {
+          title: 'Minor Pentatonic',
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Major',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Major 7',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Minor',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Minor 7',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Dominant 7',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Augmented',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         },
         {
           title: 'Diminished',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <IoIcons.IoNewspaper />,
         }
       ],
       action: (selection) => {
-        selection = selection.title;
         const { root } = context;
-        let noteSet = []
-        // Handle scales explicitly before messy chord
-        if (selection.includes('Scale')) {
-          if (selection.includes('Major'))
-            noteSet = [root, root + 2, root + 4, root + 3, root + 5, root + 7, root + 10];
-          else if (selection.includes('Minor')) {
-            noteSet = [root, root + 2, root + 3, root + 5, root + 7, root + 8, root + 10];
+        // Note that only minor chords derived from minor scale. Dim/Aug/Dom chords to be derived from major scale
+        const scale = selection.title.includes('Minor') ? minorScale(root) : majorScale(root);
+
+        // Assemble set of notes from scale degreees
+        const noteSet = () => {
+          switch (selection.title) {
+            case 'Major Pentatonic':
+            case 'Minor Pentatonic':
+              return [scale[0], scale[1], scale[2], scale[4], scale[5]]; // Pentatonic is scale with 4 & 7 degree's ommitted
+            case 'Major':
+            case 'Minor':
+              return [scale[0], scale[2], scale[4]]; // Major/minor chords are 1/3/5 of-0 indexed scale
+            case 'Major 7':
+            case 'Minor 7':
+              return [scale[0], scale[2], scale[4], scale[6]]; // Major/minor 7 chords are 1/3/5/7 of-0 indexed scale
+            case 'Dominant 7':
+              return [scale[0], scale[2], scale[4], scale[6] - 1]; // Exploiting that dominant7 is Maj7b5 in jazz notation
+            case 'Augmented':
+              return [scale[0], scale[2], scale[4] + 1] // Augmented implies sharp fifth
+            case 'Diminished':
+              return [scale[0], scale[2] - 1, scale[4] - 1] // Augmented implies flat third, fifth
+            case 'Natural Major':
+            case 'Natural Minor':
+            default:
+              return scale;
           }
-
-          noteSet = noteSet.map(note => note % 12)
-          context.updateNoteSet(noteSet);
-          return;
         }
-
-        // Build other chords as they pertain to a basic major chord
-        let third = root + 4;
-        let fifth = third + 3;
-        let seventh = fifth + 4;
-        if (selection.includes('Diminished')) {
-          third -= 1;
-          fifth -= 1;
-        }
-        else if (selection.includes('Minor')) {
-          third -= 1;
-        }
-        else if (selection.includes('Augmented')) {
-          third += 1;
-          fifth += 1;
-        }
-
-        if (selection.includes('7')) {
-          if (!selection.includes('Major')) // cases of minor, dominant
-            seventh -= 1;
-          noteSet = [root, third, fifth, seventh];
-        }
-        else
-          noteSet = [root, third, fifth];
-
-
-        noteSet = noteSet.map(note => note % 12)
-        context.updateNoteSet(noteSet);
-        return;
-      }
+        return context.updateNoteSet(noteSet());
+      },
+      updateList: (list, index) => updateSingleItem(list, index)
     },
     {
       title: 'Settings',
       icon: <FaIcons.FaCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
+      page: '/StringTheory',
       subNav: [
         {
           title: 'Dots / Fret Numbers',
@@ -301,20 +320,60 @@ export const SidebarData = () => {
         {
           title: 'Nothing',
           icon: <FaIcons.FaClipboardList />
+        },
+        {
+          title: 'Left Handed',
+          icon: <FaIcons.FaClipboardList />,
         }
       ],
       action: (setting) => {
         const { title } = setting;
-        context.updateInlays(title.includes('Dot'))
-        context.updateFretNumbers(title.includes('Fret Numbers'))
-        return true;
+        if (title.includes('Handed'))
+          context.updateLefty(!context.lefty);
+        else {
+          context.updateInlays(title.includes('Dot'));
+          context.updateFretNumbers(title.includes('Numbers'));
+        }
+      },
+      updateList: (list, index, title) => {
+        const newList = list.slice();
+        // Preserve other list options if changing handed-ness setting
+        if (title.includes('Handed')) {
+          newList[index] = !list[index];
+        }
+        else {
+          newList.fill(false);
+          newList[index] = true;
+          // Must preserve handed-ness setting when changing other options
+          newList[newList.length - 1] = list[list.length - 1]
+        }
+        return newList;
       }
     },
     {
       title: 'Project Info',
+      icon: <IoIcons.IoHelpCircle />,
       path: '/About',
-      icon: <IoIcons.IoMdHelpCircle />,
+      page: '/StringTheory',
+      subNav: []
+    },
+    {
+      title: 'String Theory',
+      icon: <FaIcons.FaGuitar />,
+      path: '/StringTheory',
+      page: '/About',
       subNav: []
     }
   ]
 };
+
+/**
+  Returns a boolean array of same length as
+  input list containing all falses, but with
+  a true at index of second parameter
+*/
+const updateSingleItem = (list, index) => {
+  list = new Array(list.length).fill(false);
+  list[index] = true;
+  return list;
+}
