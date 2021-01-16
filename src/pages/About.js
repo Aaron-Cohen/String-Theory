@@ -17,7 +17,7 @@ const About = () => {
           </Text>
           <Text>
             This is my first project using the React framework. You can find the source code
-              <Link to="https://github.com/Aaron-Cohen/StringTheory" text="here." />
+              <Link to="https://github.com/Aaron-Cohen/String-Theory" text="here." />
             If you have any improvements to the source code, or notice any bugs, please reach out to me on my
             <Link to="https://www.linkedin.com/in/-aaroncohen/" text="LinkedIn." />
           </Text>
