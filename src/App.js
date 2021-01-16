@@ -38,10 +38,10 @@ export default class App extends Component {
           <Sidebar />
           <Switch>
             <Route exact path="/">
-              <Redirect to="/String-Theory" />
+              <Redirect to="/String-Theory/" />
             </Route>
-            <Route path='/String-Theory' exact component={StringTheory} />
-            <Route path='/About' exact component={About} />
+            <Route path='/String-Theory/' exact component={StringTheory} />
+            <Route path='/About/' exact component={About} />
           </Switch>
         </Router>
       </GlobalContext.Provider>
