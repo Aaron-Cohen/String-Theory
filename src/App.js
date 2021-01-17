@@ -1,10 +1,11 @@
 import './App.css';
 import Sidebar from './components/Sidebar';
 import React, { Component } from 'react'
+import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import StringTheory from './pages/StringTheory';
 import About from './pages/About';
-import { GlobalContext, defaultTuning, defaultRoot, majorScale } from './GlobalsAndContext'
+import { GlobalContext, defaultTuning, defaultRoot, majorScale } from './GlobalsAndContext';
 
 export default class App extends Component {
   state = {
@@ -29,6 +30,12 @@ export default class App extends Component {
       this.setState({ tuning });
     },
     setTuning: (tuning) => this.setState({ tuning })
+  }
+
+  componentDidMount() {
+    // Google analytics to track traffic
+    ReactGA.initialize('UA-187525938-1');
+    ReactGA.pageview(window.location.pathname + window.location.search)
   }
 
   render() {
