@@ -16,19 +16,19 @@ export const Inlay = (props) => {
                     <div ><Dot /></div>
                 </div>
             }
-        </Box >)
+        </Box >);
 
     // Edge case where no dots on odd fret b/c 12th fret gets double dots
     else if (props.fret === 11 || props.fret === 13)
-        return <Box fret={props.fret}></Box>
+        return <Box fret={props.fret}></Box>;
 
     // Case of single dots
     else if (props.fret % 2 && props.fret > 1)
-        return (<Box fret={props.fret}> <Dot /> </Box >)
+        return <Box fret={props.fret}> <Dot /> </Box >;
 
     // Case of no dots
     else
-        return <Box fret={props.fret}> </Box>
+        return <Box fret={props.fret}> </Box>;
 }
 export default Inlay;
 

@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
-import Inlay from './Inlay.js'
-import Nut from './Nut'
-import { fretCount, GlobalContext } from '../GlobalsAndContext.js'
+import { fretCount, GlobalContext } from '../GlobalsAndContext'
+import { GuitarRow, Nut } from './SharedComponents'
+import Inlay from './Inlay'
 
 export const InlayRow = (props) => {
     const context = useContext(GlobalContext);
@@ -15,15 +14,9 @@ export const InlayRow = (props) => {
         frets.reverse();
 
     return (
-        <Row>
+        <GuitarRow>
             {frets}
-        </Row>
+        </GuitarRow>
     );
 }
 export default InlayRow;
-
-const Row = styled.div`
-  display: flex; 
-  width: 75vw;
-  max-height: 15vh;
-`;

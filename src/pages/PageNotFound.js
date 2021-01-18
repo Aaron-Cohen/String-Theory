@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import * as Fa from 'react-icons/fa/';
+import { Body, Page } from '../components/SharedComponents';
 
 const PageNotFound = () => {
   return (
@@ -30,25 +31,9 @@ const Link = (props) => (
   </a>
 )
 
-const Body = styled.div`
-  display: inline;
-  margin-top: 15px;
-  font-size: 2rem;
-`
-
 const Text = styled.p`
   margin: 33px;
   line-height: 2.5rem;
   text-align: center;
 `
-
-const Page = styled.div`
-  display: inline-flex;
-  margin: 4% 15% 5% 20%;
-  justify-content: center;
-  align-content: center;
-  font-size: 3rem;
-  overflow: hidden;
-`
-
 export default PageNotFound;

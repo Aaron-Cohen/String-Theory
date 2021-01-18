@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { fretCount, GlobalContext } from '../GlobalsAndContext.js';
-import Fret from './Fret.js'
-import Nut from './Nut.js'
-import { mapNumberToNote } from '../GlobalsAndContext.js'
+import { mapNumberToNote, fretCount, GlobalContext } from '../GlobalsAndContext.js'
+import { GuitarRow, Nut } from './SharedComponents';
+import Fret from './Fret'
 
 export const FretRow = (props) => {
     const context = useContext(GlobalContext);
@@ -11,20 +9,14 @@ export const FretRow = (props) => {
     for (let i = props.rootNote; i <= fretCount + props.rootNote; i++)
         frets.push(<Fret text={context.noteSet.includes(i % 12) ? mapNumberToNote(i, context.mode) : ''} fret={i - props.rootNote} />);
 
-    frets.splice(1, 0, <Nut />)
+    frets.splice(1, 0, <Nut />);
     if (context.lefty)
         frets.reverse();
 
     return (
-        <Row>
+        <GuitarRow>
             {frets}
-        </Row>
-    )
+        </GuitarRow>
+    );
 }
 export default FretRow;
-
-const Row = styled.div`
-  display: flex;
-  width: 75vw;
-  max-height: 15vh;
-`;

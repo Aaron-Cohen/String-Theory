@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { Body, Page } from '../components/SharedComponents';
 
 const About = () => {
   return (
@@ -12,7 +13,7 @@ const About = () => {
           <Text>
             I built this program to make alternative tunings on guitar
             more accessible without needing a strong music theory background.
-            For more information, check out the Wikipedia page for
+            For more information on this topic, check out the Wikipedia page for
               <Link to="https://en.wikipedia.org/wiki/Scordatura" text="Scordatura." />
           </Text>
           <Text>
@@ -34,26 +35,11 @@ const Link = (props) => (
   <a href={props.to} target="_blank" rel="noreferrer" style={{ display: 'inline', color: 'blue', margin: '.25em' }}>
     {props.text}
   </a>
-)
-
-const Body = styled.div`
-  display: inline;
-  margin-top: 15px;
-  font-size: 2rem;
-`
+);
 
 const Text = styled.p`
   margin: 33px;
   line-height: 2.5rem;
-`
-
-const Page = styled.div`
-  display: inline-flex;
-  margin: 4% 15% 5% 20%;
-  justify-content: center;
-  align-content: center;
-  font-size: 3rem;
-  overflow: hidden;
-`
+`;
 
 export default About;
