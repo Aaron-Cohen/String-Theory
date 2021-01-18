@@ -14,7 +14,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaSlidersH />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/String-Theory/',
+      page: '/',
       subNav: [
         {
           title: 'Sharps',
@@ -33,7 +33,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaGuitar />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/String-Theory/',
+      page: '/',
       subNav: [
         {
           title: mapNumberToNote(context.tuning[0], context.mode),
@@ -98,7 +98,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaUserCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/String-Theory/',
+      page: '/',
       subNav: [
         {
           title: 'Standard',
@@ -149,7 +149,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaSortAlphaDown />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/String-Theory/',
+      page: '/',
       subNav: [
         {
           title: 'A',
@@ -218,7 +218,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaWrench />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/String-Theory/',
+      page: '/',
       subNav: [
         {
           title: 'Natural Major',
@@ -303,7 +303,7 @@ export const SidebarData = () => {
       icon: <FaIcons.FaCog />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
-      page: '/String-Theory/',
+      page: '/',
       subNav: [
         {
           title: 'Dots / Fret Numbers',
@@ -354,13 +354,13 @@ export const SidebarData = () => {
       title: 'Project Info',
       icon: <IoIcons.IoHelpCircle />,
       path: '/About/',
-      page: '/String-Theory/',
+      page: '/',
       subNav: []
     },
     {
       title: 'String Theory',
       icon: <FaIcons.FaGuitar />,
-      path: '/String-Theory/',
+      path: '',
       page: '/About/',
       subNav: []
     }

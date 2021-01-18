@@ -2,7 +2,7 @@ import './App.css';
 import Sidebar from './components/Sidebar';
 import React, { Component } from 'react'
 import ReactGA from 'react-ga';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import StringTheory from './pages/StringTheory';
 import About from './pages/About';
 import { GlobalContext, defaultTuning, defaultRoot, majorScale } from './GlobalsAndContext';
@@ -41,16 +41,11 @@ export default class App extends Component {
   render() {
     return (
       <GlobalContext.Provider value={this.state}>
-        <Router>
+        <HashRouter basename={'String-Theory'} >
           <Sidebar />
-          <Switch>
-            <Route exact path="/">
-              <Redirect to="/String-Theory/" />
-            </Route>
-            <Route path='/String-Theory/' exact component={StringTheory} />
-            <Route path='/About/' exact component={About} />
-          </Switch>
-        </Router>
+          <Route path='/' exact component={StringTheory} />
+          <Route path='/About/' exact component={About} />
+        </HashRouter>
       </GlobalContext.Provider>
     )
   }
