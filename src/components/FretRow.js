@@ -28,5 +28,4 @@ const Row = styled.div`
   margin: auto;
   width: 75vw;
   max-height: 15vh;
-  overflow: hidden;
 `;

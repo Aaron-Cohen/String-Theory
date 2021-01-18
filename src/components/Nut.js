@@ -6,6 +6,6 @@ export const Nut = styled.button`
     border-radius:6px;
 	font-size: 15px;
     font-weight: bold;
-    width: 25%;
+    width: 25px;
 `;
 export default Nut;
