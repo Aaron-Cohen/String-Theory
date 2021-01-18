@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { shrinkFactor } from '../GlobalsAndContext';
 
 export const Inlay = (props) => {
     // Case where there is text displayed and not dots 
@@ -52,7 +53,7 @@ const Box = styled.div`
     font-weight:bold;
     height: 5vh;
     min-height: 32px;
-    width: calc(150px - ${props => props.fret * 4}px);
+    width: calc(150px - ${props => props.fret * shrinkFactor}px);
     min-width: 30px;
     text-shadow: 0px 1px 0px #ffffff;
     display: flex;

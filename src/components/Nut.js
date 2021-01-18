@@ -7,5 +7,6 @@ export const Nut = styled.button`
 	font-size: 15px;
     font-weight: bold;
     width: 25px;
+    min-width: 10px;
 `;
 export default Nut;

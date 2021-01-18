@@ -28,7 +28,7 @@ import React from 'react';
  * 
  * @param {String} note 
  */
-export const mapNoteToNumber = (note) => {
+export function mapNoteToNumber(note) {
     note = note.trim();
     // Error trap invalid input
     if (typeof note !== 'string' || note.length === 0 || note.length > 2) {
@@ -87,7 +87,7 @@ export const mapNoteToNumber = (note) => {
  * 
  * @param {*} note 
  */
-export const mapNumberToNote = (note, accidental) => {
+export function mapNumberToNote(note, accidental) {
     // Wrap notes around chromatic octave before continuing
     note = note % 12
 
@@ -128,19 +128,19 @@ export const mapNumberToNote = (note, accidental) => {
 export const defaultRoot = 1; // Note = 1 = A
 export const majorScale = (root) => [0, 2, 4, 5, 7, 9, 11].map(offset => (offset + root) % 12);
 export const minorScale = (root) => [0, 2, 3, 5, 7, 8, 10].map(offset => (offset + root) % 12);
-export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
-// Tuning should always be expressed numerically and never lexigraphically.
+
+// Tuning should always be calculated numerically and never lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when
 // global context changes.
-const defaultTuningMap = () => {
-    const tuning = [];
-    defaultTuningArray.forEach(note => {
-        tuning.push(mapNoteToNumber(note));
-    })
-    return tuning;
-}
+export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
+export const defaultTuning = defaultTuningArray.map(e => mapNoteToNumber(e));
+
+// Frets displayed, and scale factor by which they shrink in size
 export const fretCount = 21;
-export const defaultTuning = defaultTuningMap();
-export const GlobalContext = React.createContext();
+export const shrinkFactor = 5;
+
+// So as to hide sidebar when 404'ing
 export const validPages = ['/', '/About/'];
+
+export const GlobalContext = React.createContext();
 export default GlobalContext;

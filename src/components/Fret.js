@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { shrinkFactor } from '../GlobalsAndContext';
 
 export const Fret = (props) => (<Box fret={props.fret} text={props.text}> { props.text}</Box >)
 export default Fret;
@@ -16,7 +17,7 @@ const Box = styled.div`
     font-weight: bold;
 	height: 10vh;
 	min-height: 32px;
-	width: calc(150px - ${props => props.fret * 4}px);
+	width: calc(150px - ${props => props.fret * shrinkFactor}px);
 	min-width: 30px;
 	text-shadow: 0px 1px 0px #ffffff;
 	display: flex;
