@@ -24,7 +24,6 @@ export default InlayRow;
 
 const Row = styled.div`
   display: flex; 
-  margin: auto;
   width: 75vw;
   max-height: 15vh;
 `;

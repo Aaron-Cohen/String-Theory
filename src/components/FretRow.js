@@ -24,8 +24,7 @@ export const FretRow = (props) => {
 export default FretRow;
 
 const Row = styled.div`
-  display: flex; 
-  margin: auto;
+  display: flex;
   width: 75vw;
   max-height: 15vh;
 `;

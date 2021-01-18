@@ -25,6 +25,7 @@ const Fretboard = () => {
 export default Fretboard;
 
 const Board = styled.div`
-  ${props => props.sidebar && `margin-left: 17vw; margin-right: 3vw;`};
+  ${props => props.sidebar ? `margin-left: 22vw; ` : `margin-left: 12.5vw;`}
+  margin-right: 3vw;
   transition: 350ms ease;
 `;
