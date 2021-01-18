@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/String-Theory/static/css/main.207a2996.chunk.css",
-    "main.js": "/String-Theory/static/js/main.2caded48.chunk.js",
-    "main.js.map": "/String-Theory/static/js/main.2caded48.chunk.js.map",
+    "main.js": "/String-Theory/static/js/main.d2908b8a.chunk.js",
+    "main.js.map": "/String-Theory/static/js/main.d2908b8a.chunk.js.map",
     "runtime-main.js": "/String-Theory/static/js/runtime-main.cac44efa.js",
     "runtime-main.js.map": "/String-Theory/static/js/runtime-main.cac44efa.js.map",
     "static/js/2.29f16247.chunk.js": "/String-Theory/static/js/2.29f16247.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.cac44efa.js",
     "static/js/2.29f16247.chunk.js",
     "static/css/main.207a2996.chunk.css",
-    "static/js/main.2caded48.chunk.js"
+    "static/js/main.d2908b8a.chunk.js"
   ]
 }
