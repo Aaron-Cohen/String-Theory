@@ -6,18 +6,19 @@ import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
-
 import { useLocation } from 'react-router-dom'
-import GlobalContext from '../GlobalsAndContext';
+import GlobalContext, { validPages } from '../GlobalsAndContext';
 
+// Black bar at top of page
 const Nav = styled.div`
   background: #15171c;
-  height: 10vh;
+  height: max(10vh, 75px);
   display: flex;
   justify-content: flex-start;
   align-items: center;
 `;
 
+// Icon to expand sidebar
 const NavIcon = styled(Link)`
   margin-left: 2rem;
   font-size: 2rem;
@@ -27,6 +28,7 @@ const NavIcon = styled(Link)`
   align-items: center;
 `;
 
+// Sidebar sliding pane
 const SidebarNav = styled.nav`
   background: #15171c;
   width: 19rem;
@@ -40,6 +42,7 @@ const SidebarNav = styled.nav`
   z-index: 10;
 `;
 
+// Wrapper to hold items in sidebar
 const SidebarWrap = styled.div`
   width: 100%;
 `;
@@ -53,9 +56,10 @@ const Sidebar = () => {
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <Nav>
-          <NavIcon to='#'>
-            <FaIcons.FaBars onClick={() => showSidebar(!sidebar)} />
-          </NavIcon>
+          {validPages.includes(path) &&
+            <NavIcon to='#'>
+              <FaIcons.FaBars onClick={() => showSidebar(!sidebar)} />
+            </NavIcon>}
         </Nav>
         <SidebarNav visible={sidebar}>
           <SidebarWrap>

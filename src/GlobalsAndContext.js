@@ -142,4 +142,5 @@ const defaultTuningMap = () => {
 export const fretCount = 21;
 export const defaultTuning = defaultTuningMap();
 export const GlobalContext = React.createContext();
+export const validPages = ['/', '/About/'];
 export default GlobalContext;

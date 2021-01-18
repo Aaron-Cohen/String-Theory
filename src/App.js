@@ -2,10 +2,11 @@ import './App.css';
 import Sidebar from './components/Sidebar';
 import React, { Component } from 'react'
 import ReactGA from 'react-ga';
-import { HashRouter, Route } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import StringTheory from './pages/StringTheory';
 import About from './pages/About';
 import { GlobalContext, defaultTuning, defaultRoot, majorScale } from './GlobalsAndContext';
+import PageNotFound from './pages/PageNotFound';
 
 export default class App extends Component {
   state = {
@@ -41,10 +42,13 @@ export default class App extends Component {
   render() {
     return (
       <GlobalContext.Provider value={this.state}>
-        <HashRouter basename={'String-Theory'} >
+        <HashRouter>
           <Sidebar />
-          <Route path='/' exact component={StringTheory} />
-          <Route path='/About/' exact component={About} />
+          <Switch>
+            <Route path='/' exact component={StringTheory} />
+            <Route path='/About/' exact component={About} />
+            <Route path='*' component={PageNotFound} />
+          </Switch>
         </HashRouter>
       </GlobalContext.Provider>
     )
