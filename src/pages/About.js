@@ -36,9 +36,15 @@ const About = () => {
             This is my first project using the React framework.
             You can find the source code
             <Link to="https://github.com/Aaron-Cohen/String-Theory" text="here." />
+          </Text>
+          <Text>
             If you have any improvements to the source code, or notice any bugs,
-            please reach out to me on my
+            please send me a message on
+            <Link to="https://www.reddit.com/user/MidwestSegovia/" text="Reddit" />
+            or
             <Link to="https://www.linkedin.com/in/-aaroncohen/" text="LinkedIn." />
+            I love hearing feedback from users, even if it is just
+            that you enjoyed using String Theory.
           </Text>
           <Text>
             Thank you for using String Theory. Happy strumming!
