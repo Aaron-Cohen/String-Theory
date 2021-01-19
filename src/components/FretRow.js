@@ -12,7 +12,7 @@ export const FretRow = (props) => {
           text={context.noteSet.includes(i % 12) ?
             mapNumberToNote(i, context.mode) : ''}
           fret={i - props.rootNote}
-        />
+        />, // Linter requires comma here
     );
   }
 

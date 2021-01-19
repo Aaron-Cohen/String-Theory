@@ -149,8 +149,8 @@ export const menuData = (context) => [
         icon: <FaIcons.FaUserAlt />,
       },
     ],
-    action: (info) =>context.setTuning(
-        info.tuning.map((e) => mapNoteToNumber(e))
+    action: (info) => context.setTuning(
+        info.tuning.map((e) => mapNoteToNumber(e)), // Lint required comma here
     ),
     updateList: (list, index) => updateSingleItem(list, index),
   },
