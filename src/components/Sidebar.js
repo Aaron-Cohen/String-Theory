@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { SidebarData } from './SidebarData';
+import {IconContext} from 'react-icons/lib';
+import menuData from './MenuData';
 import SubMenu from './SubMenu';
-import { IconContext } from 'react-icons/lib';
-import { useLocation } from 'react-router-dom'
-import GlobalContext, { validPages } from '../GlobalsAndContext';
+
+import GlobalContext, {validPages} from '../GlobalsAndContext';
 
 // Black bar at top of page
 const Nav = styled.div`
@@ -37,7 +37,7 @@ const SidebarNav = styled.nav`
   justify-content: center;
   position: fixed;
   top: 0;
-  left: ${props => (props.visible ? '0' : '-100%')};
+  left: ${(props) => (props.visible ? '0' : '-100%')};
   transition: 350ms;
   z-index: 10;
 `;
@@ -50,11 +50,11 @@ const SidebarWrap = styled.div`
 const Sidebar = () => {
   const path = useLocation().pathname;
   const context = useContext(GlobalContext);
-  const sidebar = context.sidebar;
+  const {sidebar} = context;
   const showSidebar = (show) => context.updateSidebar(show);
   return (
     <>
-      <IconContext.Provider value={{ color: '#fff' }}>
+      <IconContext.Provider value={{color: '#fff'}}>
         <Nav>
           {validPages.includes(path) &&
             <NavIcon to='#'>
@@ -66,9 +66,8 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <AiIcons.AiOutlineClose onClick={() => showSidebar(!sidebar)} />
             </NavIcon>
-            {SidebarData().map((item, index) => {
-              return (item.page === path) && <SubMenu item={item} key={index} />;
-            })}
+            {menuData(context).map((item, index) => (item.page === path) &&
+            <SubMenu item={item} key={index} />)}
           </SidebarWrap>
         </SidebarNav>
       </IconContext.Provider>

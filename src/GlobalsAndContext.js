@@ -22,118 +22,120 @@ import React from 'react';
 */
 
 /**
- * Maps a letter representation of a musical note (as a String) to a integer value.
- * Accepts natural notes, and notes followed by a # or b accidental for sharp and flat
+ * Maps a letter representation of a musical note (as a String)
+ * to a integer value. Accepts natural notes, and notes followed
+ * by a # or b accidental for sharp and flat
  * resepctively.
- * 
- * @param {String} note 
+ *
  */
 export function mapNoteToNumber(note) {
-    note = note.trim();
-    // Error trap invalid input
-    if (typeof note !== 'string' || note.length === 0 || note.length > 2) {
-        return -1;
+  note = note.trim();
+  // Error trap invalid input
+  if (typeof note !== 'string' || note.length === 0 || note.length > 2) {
+    return -1;
+  }
+
+  // Get root note before flats/sharps are applied
+  let root = null;
+  switch (note.toUpperCase().charAt(0)) {
+    case 'A':
+      root = 1;
+      break;
+    case 'B':
+      root = 3;
+      break;
+    case 'C':
+      root = 4;
+      break;
+    case 'D':
+      root = 6;
+      break;
+    case 'E':
+      root = 8;
+      break;
+    case 'F':
+      root = 9;
+      break;
+    case 'G':
+      root = 11;
+      break;
+    default:
+      return -2;
+  }
+
+  // If note contains accidental in second character, apply sharp/flat logic
+  if (note.length === 2) {
+    switch (note.toLowerCase().charAt(1)) {
+      case '#':
+      case 's':
+        root += 1;
+        break;
+      case 'b':
+        root -= 1;
+        break;
+      default:
+        return -3;
     }
+  }
 
-    // Get root note before flats/sharps are applied
-    let root = null;
-    switch (note.toUpperCase().charAt(0)) {
-        case 'A':
-            root = 1;
-            break;
-        case 'B':
-            root = 3;
-            break;
-        case 'C':
-            root = 4;
-            break;
-        case 'D':
-            root = 6;
-            break;
-        case 'E':
-            root = 8;
-            break;
-        case 'F':
-            root = 9;
-            break;
-        case 'G':
-            root = 11;
-            break;
-        default:
-            return -2;
-    }
-
-    // If note contains accidental in second character, apply sharp/flat logic
-    if (note.length === 2)
-        switch (note.toLowerCase().charAt(1)) {
-            case '#':
-            case 's':
-                root += 1;
-                break;
-            case 'b':
-                root -= 1;
-                break;
-            default:
-                return -3;
-        }
-
-    return root % 12;
+  return root % 12;
 }
 
 /**
  * Maps a numerical representation of a musical note to a String representation
- * consisting of a root, and an accidental of # or b if applicable for a sharp or 
+ * consisting of a root and an accidental of # or b if applicable for a sharp or
  * flat note
- * 
- * @param {*} note 
+ *
  */
 export function mapNumberToNote(note, accidental) {
-    // Wrap notes around chromatic octave before continuing
-    note = note % 12
+  // Wrap notes around chromatic octave before continuing
+  note = note % 12;
 
-    // Trap errors
-    if (typeof note !== 'number') {
-        throw new Error("Invalid input: must be number")
-    }
-    switch (note) {
-        case 0:
-            return accidental === 'Flats' ? 'Ab' : 'G#'
-        case 1:
-            return 'A'
-        case 2:
-            return accidental === 'Flats' ? 'Bb' : 'A#'
-        case 3:
-            return 'B'
-        case 4:
-            return 'C'
-        case 5:
-            return accidental === 'Flats' ? 'Db' : 'C#'
-        case 6:
-            return 'D'
-        case 7:
-            return accidental === 'Flats' ? 'Eb' : 'D#'
-        case 8:
-            return 'E'
-        case 9:
-            return 'F'
-        case 10:
-            return accidental === 'Flats' ? 'Gb' : 'F#'
-        case 11:
-            return 'G'
-        default:
-            throw new Error("Unable to map note to numerical value")
-    }
+  // Trap errors
+  if (typeof note !== 'number') {
+    throw new Error('Invalid input: must be number');
+  }
+  switch (note) {
+    case 0:
+      return accidental === 'Flats' ? 'Ab' : 'G#';
+    case 1:
+      return 'A';
+    case 2:
+      return accidental === 'Flats' ? 'Bb' : 'A#';
+    case 3:
+      return 'B';
+    case 4:
+      return 'C';
+    case 5:
+      return accidental === 'Flats' ? 'Db' : 'C#';
+    case 6:
+      return 'D';
+    case 7:
+      return accidental === 'Flats' ? 'Eb' : 'D#';
+    case 8:
+      return 'E';
+    case 9:
+      return 'F';
+    case 10:
+      return accidental === 'Flats' ? 'Gb' : 'F#';
+    case 11:
+      return 'G';
+    default:
+      throw new Error('Unable to map note to numerical value');
+  }
 }
 
 export const defaultRoot = 1; // Note = 1 = A
-export const majorScale = (root) => [0, 2, 4, 5, 7, 9, 11].map(offset => (offset + root) % 12);
-export const minorScale = (root) => [0, 2, 3, 5, 7, 8, 10].map(offset => (offset + root) % 12);
+export const majorScale = (root) =>
+  [0, 2, 4, 5, 7, 9, 11].map((offset) => (offset + root) % 12);
+export const minorScale = (root) =>
+  [0, 2, 3, 5, 7, 8, 10].map((offset) => (offset + root) % 12);
 
 // Tuning should always be calculated numerically and never lexigraphically.
 // This allows for dynamic switching between equivalent sharp/flats when
 // global context changes.
-export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E']
-export const defaultTuning = defaultTuningArray.map(e => mapNoteToNumber(e));
+export const defaultTuningArray = ['E', 'B', 'G', 'D', 'A', 'E'];
+export const defaultTuning = defaultTuningArray.map((e) => mapNoteToNumber(e));
 
 // Frets displayed, and scale factor by which they shrink in size
 export const fretCount = 21;

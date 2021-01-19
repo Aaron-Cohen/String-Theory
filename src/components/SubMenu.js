@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { GlobalContext } from '../GlobalsAndContext'
+import {Link} from 'react-router-dom';
+import {GlobalContext} from '../GlobalsAndContext';
 
 // Top level item in menu
 const SidebarLink = styled(Link)`
@@ -30,7 +30,7 @@ const SidebarPanel = styled.div`
 
 // Secondary level options
 const DropdownLink = styled.div`
-  background: ${props => (props.selected ? '#632ce4;' : '#414757;')} 
+  background: ${(props) => (props.selected ? '#632ce4;' : '#414757;')} 
   padding-left: 3rem;
   display: flex;
   align-items: center;
@@ -53,28 +53,33 @@ const SidebarLabel = styled.span`
 
 export default class Submenu extends Component {
   constructor(props) {
-    super(props);               // Prop of item holds top level menu choice. Defined in SidebarData.js
+    super(props);
     this.state = {
-      list: [],                 // Subitems to be highlighted from item prop
-      showSubNavigation: false  // Whether menu choice is expanded or not
-    }
+      list: [], // Subitems to be highlighted from item prop
+      showSubNavigation: false, // Whether menu choice is expanded or not
+    };
   }
 
-  // By default, highlight first option in each menu item, except for tuning which has isEditable === true
+  // By default, highlight first option in each menu item,
+  // except for tuning which has isEditable === true
   componentDidMount() {
-    let list = new Array(this.props.item.subNav.length).fill(false);
+    const list = new Array(this.props.item.subNav.length).fill(false);
     list[0] = !this.props.item.editable;
-    this.setState({ list })
+    this.setState({list});
   }
 
   render() {
-    const item = this.props.item;
-    const forceCollapseSidebar = () => this.context.updateSidebar(false)
-    const showSubNavigation = () => this.setState({ showSubNavigation: !this.state.showSubNavigation });
+    const {item} = this.props;
+    const forceCollapseSidebar = () => this.context.updateSidebar(false);
+    const showSubNavigation = () => this.setState(
+        {showSubNavigation: !this.state.showSubNavigation},
+    );
 
     return (
       <>
-        <SidebarLink to={item.path} onClick={!item.path ? showSubNavigation : forceCollapseSidebar}>
+        <SidebarLink to={item.path}
+          onClick={!item.path ? showSubNavigation : forceCollapseSidebar}
+        >
           <div>
             {item.icon}
             <SidebarLabel>{item.title}</SidebarLabel>
@@ -85,34 +90,37 @@ export default class Submenu extends Component {
         </SidebarLink>
         <SidebarPanel>
           {this.state.showSubNavigation &&
-            item.subNav.map((subItem, index) => {
-              return (
-                <DropdownLink key={index} selected={this.state.list[index] === true}
-                  onClick={() => {
-                    item.action(subItem); // Each menu item has a custom action associated with, and updates
-                    this.setState({       // how its choices are selected and colored differently. 
-                      list:
-                        item.updateList(this.state.list, index, subItem.title)
-                    })
+            item.subNav.map((subItem, index) => (
+              <DropdownLink
+                key={index}
+                selected={this.state.list[index] === true}
+                onClick={() => {
+                  item.action(subItem);
+                  this.setState({
+                    list:
+                      item.updateList(this.state.list, index, subItem.title),
+                  });
+                }}
+              >
+                {subItem.icon}
+                <SidebarLabel contentEditable={item.editable} spellCheck={false}
+                  onBlur={(e) => {
+                    e.currentTarget.textContent =
+                      item.updateTuning(e.currentTarget.textContent, index) ||
+                      subItem.title;
                   }}
+                  onKeyDown={(e) =>
+                    (e.code === 'Enter' || e.code === 'Tab') &&
+                    (e.currentTarget.blur())}
                 >
-                  {subItem.icon}
-                  <SidebarLabel contentEditable={item.editable} spellCheck={false}
-                    onBlur={(e) => {
-                      e.currentTarget.textContent =
-                        item.updateTuning(e.currentTarget.textContent, index) || subItem.title;
-                    }}
-                    onKeyDown={(e) => (e.code === 'Enter' || e.code === 'Tab') && (e.currentTarget.blur())}
-                  >
-                    {subItem.title}
-                  </SidebarLabel>
-                </DropdownLink>
-              );
-            })
+                  {subItem.title}
+                </SidebarLabel>
+              </DropdownLink>
+            ))
           }
         </SidebarPanel>
       </ >
-    )
+    );
   }
 }
-Submenu.contextType = GlobalContext
+Submenu.contextType = GlobalContext;

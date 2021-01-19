@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Body, Page } from '../components/SharedComponents';
+import {Body, Page} from '../components/SharedComponents';
 
 const About = () => {
   return (
     <Page>
       <div>
-        <div style={{ textAlign: 'center', marginBottom: '5%' }}>
+        <div style={{textAlign: 'center', marginBottom: '5%'}}>
           <h2 >About String Theory</h2>
         </div>
         <Body>
@@ -14,12 +14,14 @@ const About = () => {
             I built this program to make alternative tunings on guitar
             more accessible without needing a strong music theory background.
             For more information on this topic, check out the Wikipedia page for
-              <Link to="https://en.wikipedia.org/wiki/Scordatura" text="Scordatura." />
+            <Link to="https://en.wikipedia.org/wiki/Scordatura" text="Scordatura." />
           </Text>
           <Text>
-            This is my first project using the React framework. You can find the source code
-              <Link to="https://github.com/Aaron-Cohen/String-Theory" text="here." />
-            If you have any improvements to the source code, or notice any bugs, please reach out to me on my
+            This is my first project using the React framework.
+            You can find the source code
+            <Link to="https://github.com/Aaron-Cohen/String-Theory" text="here." />
+            If you have any improvements to the source code, or notice any bugs,
+            please reach out to me on my
             <Link to="https://www.linkedin.com/in/-aaroncohen/" text="LinkedIn." />
           </Text>
           <Text>
@@ -32,7 +34,12 @@ const About = () => {
 };
 
 const Link = (props) => (
-  <a href={props.to} target="_blank" rel="noreferrer" style={{ display: 'inline', color: 'blue', margin: '.25em' }}>
+  <a
+    href={props.to}
+    target="_blank"
+    rel="noreferrer"
+    style={{display: 'inline', color: 'blue', margin: '.25em'}}
+  >
     {props.text}
   </a>
 );
