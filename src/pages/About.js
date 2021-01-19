@@ -2,6 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import {Body, Page} from '../components/SharedComponents';
 
+const Text = styled.p`
+  margin: 33px;
+  line-height: 2.5rem;
+`;
+
+const Link = (props) => (
+  <a
+    href={props.to}
+    target="_blank"
+    rel="noreferrer"
+    style={{display: 'inline', color: 'blue', margin: '.25em'}}
+  >
+    {props.text}
+  </a>
+);
+
 const About = () => {
   return (
     <Page>
@@ -32,21 +48,4 @@ const About = () => {
     </Page>
   );
 };
-
-const Link = (props) => (
-  <a
-    href={props.to}
-    target="_blank"
-    rel="noreferrer"
-    style={{display: 'inline', color: 'blue', margin: '.25em'}}
-  >
-    {props.text}
-  </a>
-);
-
-const Text = styled.p`
-  margin: 33px;
-  line-height: 2.5rem;
-`;
-
 export default About;

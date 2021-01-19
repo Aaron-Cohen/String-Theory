@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-export const GuitarRow = styled.div`
-  display: flex;
-  width: 75vw;
-  max-height: 15vh;
-`;
-
 export const Nut = styled.div`
   background-color: ${(props) => (props.hideNut ? 'transparent;' : '#e0955c;')}
   border: 3px solid #dcdcdc;
@@ -31,4 +25,9 @@ export const Page = styled.div`
   overflow: hidden;
 `;
 
+export const GuitarRow = styled.div`
+  display: flex;
+  width: 75vw;
+  max-height: 15vh;
+`;
 export default GuitarRow;

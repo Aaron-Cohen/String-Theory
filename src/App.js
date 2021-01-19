@@ -1,12 +1,12 @@
 /* eslint-disable no-invalid-this */
 import './App.css';
-import Sidebar from './components/Sidebar';
-import React, {Component} from 'react';
 import ReactGA from 'react-ga';
-import {HashRouter, Route, Switch} from 'react-router-dom';
-import StringTheory from './pages/StringTheory';
 import About from './pages/About';
+import React, {Component} from 'react';
+import Sidebar from './components/Sidebar';
 import PageNotFound from './pages/PageNotFound';
+import StringTheory from './pages/StringTheory';
+import {HashRouter, Route, Switch} from 'react-router-dom';
 import {
   GlobalContext,
   defaultTuning,

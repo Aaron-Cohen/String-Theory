@@ -1,9 +1,9 @@
 import React from 'react';
 import * as FaIcons from 'react-icons/fa';
-import * as IoIcons from 'react-icons/io5';
-import * as RiIcons from 'react-icons/ri';
-import * as GiIcons from 'react-icons/gi';
-import * as CgIcons from 'react-icons/cg';
+import {GiTunePitch} from 'react-icons/gi';
+import {CgTrendingDown} from 'react-icons/cg/index';
+import {IoNewspaper, IoHelpCircle} from 'react-icons/io5';
+import {RiArrowDownSFill, RiArrowUpSFill} from 'react-icons/ri';
 import {
   mapNoteToNumber, mapNumberToNote, majorScale, minorScale,
 } from '../GlobalsAndContext';
@@ -23,8 +23,8 @@ export const menuData = (context) => [
   {
     title: 'Sharp/Flat Mode',
     icon: <FaIcons.FaSlidersH />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill />,
+    iconOpened: <RiArrowUpSFill />,
     page: '/',
     subNav: [
       {
@@ -33,7 +33,7 @@ export const menuData = (context) => [
       },
       {
         title: 'Flats',
-        icon: <CgIcons.CgTrendingDown />,
+        icon: <CgTrendingDown />,
       },
     ],
     action: (choice) => context.updateMode(choice.title),
@@ -42,15 +42,15 @@ export const menuData = (context) => [
   {
     title: 'Custom Tuning',
     icon: <FaIcons.FaGuitar />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill />,
+    iconOpened: <RiArrowUpSFill />,
     page: '/',
     subNav: [
       {
         title: mapNumberToNote(context.tuning[0], context.mode),
-        icon: <GiIcons.GiTunePitch />,
-        iconClosed: <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
+        icon: <GiTunePitch />,
+        iconClosed: <RiArrowDownSFill />,
+        iconOpened: <RiArrowUpSFill />,
         subNav: [
           {
             title: 'inner level',
@@ -64,23 +64,23 @@ export const menuData = (context) => [
       },
       {
         title: mapNumberToNote(context.tuning[1], context.mode),
-        icon: <GiIcons.GiTunePitch />,
+        icon: <GiTunePitch />,
       },
       {
         title: mapNumberToNote(context.tuning[2], context.mode),
-        icon: <GiIcons.GiTunePitch />,
+        icon: <GiTunePitch />,
       },
       {
         title: mapNumberToNote(context.tuning[3], context.mode),
-        icon: <GiIcons.GiTunePitch />,
+        icon: <GiTunePitch />,
       },
       {
         title: mapNumberToNote(context.tuning[4], context.mode),
-        icon: <GiIcons.GiTunePitch />,
+        icon: <GiTunePitch />,
       },
       {
         title: mapNumberToNote(context.tuning[5], context.mode),
-        icon: <GiIcons.GiTunePitch />,
+        icon: <GiTunePitch />,
       },
     ],
     editable: true,
@@ -104,8 +104,8 @@ export const menuData = (context) => [
   {
     title: 'Tuning Presets',
     icon: <FaIcons.FaUserCog />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill />,
+    iconOpened: <RiArrowUpSFill />,
     page: '/',
     subNav: [
       {
@@ -157,8 +157,8 @@ export const menuData = (context) => [
   {
     title: 'Root Note / Key',
     icon: <FaIcons.FaSortAlphaDown />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill />,
+    iconOpened: <RiArrowUpSFill />,
     page: '/',
     subNav: [
       {
@@ -226,53 +226,53 @@ export const menuData = (context) => [
   {
     title: 'Pattern Type',
     icon: <FaIcons.FaWrench />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill />,
+    iconOpened: <RiArrowUpSFill />,
     page: '/',
     subNav: [
       {
         title: 'Natural Major',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Natural Minor',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Major Pentatonic',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Minor Pentatonic',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Major',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Major 7',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Minor',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Minor 7',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Dominant 7',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Augmented',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
       {
         title: 'Diminished',
-        icon: <IoIcons.IoNewspaper />,
+        icon: <IoNewspaper />,
       },
     ],
     action: (selection) => {
@@ -316,8 +316,8 @@ export const menuData = (context) => [
   {
     title: 'Settings',
     icon: <FaIcons.FaCog />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill />,
+    iconOpened: <RiArrowUpSFill />,
     page: '/',
     subNav: [
       {
@@ -365,7 +365,7 @@ export const menuData = (context) => [
   },
   {
     title: 'Project Info',
-    icon: <IoIcons.IoHelpCircle />,
+    icon: <IoHelpCircle />,
     path: '/About/',
     page: '/',
     subNav: [],

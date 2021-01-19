@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
+import SubMenu from './SubMenu';
+import menuData from './MenuData';
 import styled from 'styled-components';
-import {Link, useLocation} from 'react-router-dom';
+import React, {useContext} from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import {IconContext} from 'react-icons/lib';
-import menuData from './MenuData';
-import SubMenu from './SubMenu';
+import {Link, useLocation} from 'react-router-dom';
 
 import GlobalContext, {validPages} from '../GlobalsAndContext';
 
@@ -51,17 +51,18 @@ const Sidebar = () => {
   const path = useLocation().pathname;
   const context = useContext(GlobalContext);
   const {sidebar} = context;
+  const isValidPage = validPages.includes(path);
   const showSidebar = (show) => context.updateSidebar(show);
   return (
     <>
       <IconContext.Provider value={{color: '#fff'}}>
-        <Nav>
-          {validPages.includes(path) &&
+        <Nav >
+          {isValidPage &&
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={() => showSidebar(!sidebar)} />
             </NavIcon>}
         </Nav>
-        <SidebarNav visible={sidebar}>
+        <SidebarNav visible={sidebar && isValidPage}>
           <SidebarWrap>
             <NavIcon to='#'>
               <AiIcons.AiOutlineClose onClick={() => showSidebar(!sidebar)} />
@@ -74,5 +75,4 @@ const Sidebar = () => {
     </>
   );
 };
-
 export default Sidebar;

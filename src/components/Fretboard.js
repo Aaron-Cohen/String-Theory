@@ -1,8 +1,14 @@
-import React, {useContext} from 'react';
-import styled from 'styled-components';
 import FretRow from './FretRow';
 import InlayRow from './InlayRow';
+import styled from 'styled-components';
+import React, {useContext} from 'react';
 import {GlobalContext} from '../GlobalsAndContext.js';
+
+const Board = styled.div`
+  ${(props) => (props.sidebar ? 'margin-left: 22vw; ' : 'margin-left: 12.5vw;')}
+  margin-right: 3vw;
+  transition: 350ms ease;
+`;
 
 const Fretboard = () => {
   const context = useContext(GlobalContext);
@@ -22,9 +28,3 @@ const Fretboard = () => {
   );
 };
 export default Fretboard;
-
-const Board = styled.div`
-  ${(props) => (props.sidebar ? 'margin-left: 22vw; ' : 'margin-left: 12.5vw;')}
-  margin-right: 3vw;
-  transition: 350ms ease;
-`;

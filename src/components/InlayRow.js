@@ -1,7 +1,7 @@
-import React, {useContext} from 'react';
-import {fretCount, GlobalContext} from '../GlobalsAndContext';
-import {GuitarRow, Nut} from './SharedComponents';
 import Inlay from './Inlay';
+import React, {useContext} from 'react';
+import {GuitarRow, Nut} from './SharedComponents';
+import {fretCount, GlobalContext} from '../GlobalsAndContext';
 
 export const InlayRow = (props) => {
   const context = useContext(GlobalContext);

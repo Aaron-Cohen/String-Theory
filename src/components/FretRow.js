@@ -1,7 +1,7 @@
-import React, {useContext} from 'react';
-import {mapNumberToNote, fretCount, GlobalContext} from '../GlobalsAndContext';
-import {GuitarRow, Nut} from './SharedComponents';
 import Fret from './Fret';
+import React, {useContext} from 'react';
+import {GuitarRow, Nut} from './SharedComponents';
+import {mapNumberToNote, fretCount, GlobalContext} from '../GlobalsAndContext';
 
 export const FretRow = (props) => {
   const context = useContext(GlobalContext);
@@ -27,5 +27,4 @@ export const FretRow = (props) => {
     </GuitarRow>
   );
 };
-
 export default FretRow;

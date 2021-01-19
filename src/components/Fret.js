@@ -2,13 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import {shrinkFactor} from '../GlobalsAndContext';
 
-export const Fret = (props) => (
-  <Box fret={props.fret} text={props.text}>
-    { props.text}
-  </Box >
-);
-export default Fret;
-
 const Box = styled.div`
   box-shadow: inset 0px 1px 0px 0px #ffffff;
   background-color: ${(props) => (props.text ? '#e0ebff;' : 'transparent;')}
@@ -28,3 +21,11 @@ const Box = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const Fret = (props) => (
+  <Box fret={props.fret} text={props.text}>
+    { props.text}
+  </Box >
+);
+export default Fret;
+

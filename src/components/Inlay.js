@@ -2,6 +2,34 @@ import React from 'react';
 import styled from 'styled-components';
 import {shrinkFactor} from '../GlobalsAndContext';
 
+const Box = styled.div`
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+  background-color: transparent;
+  border-radius:6px;
+  border:3px solid #dcdcdc;
+  display: flex;
+  color:#666666;
+  font-family:Arial;
+  font-size: 12px;
+  font-weight:bold;
+  height: 5vh;
+  min-height: 32px;
+  width: calc(150px - ${(props) => props.fret * shrinkFactor}px);
+  min-width: 30px;
+  text-shadow: 0px 1px 0px #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Dot = () => (
+  <div style={{
+    padding: 4,
+    display: 'inline-block',
+    backgroundColor: 'black',
+    borderRadius: '50%',
+  }} />);
+
 export const Inlay = (props) => {
   // Case where there is text displayed and not dots
   if (props.text) {
@@ -41,31 +69,3 @@ export const Inlay = (props) => {
   return <Box fret={props.fret}> </Box>;
 };
 export default Inlay;
-
-const Dot = () => (
-  <div style={{
-    padding: 4,
-    display: 'inline-block',
-    backgroundColor: 'black',
-    borderRadius: '50%',
-  }} />);
-
-const Box = styled.div`
-  box-shadow:inset 0px 1px 0px 0px #ffffff;
-  background-color: transparent;
-  border-radius:6px;
-  border:3px solid #dcdcdc;
-  display: flex;
-  color:#666666;
-  font-family:Arial;
-  font-size: 12px;
-  font-weight:bold;
-  height: 5vh;
-  min-height: 32px;
-  width: calc(150px - ${(props) => props.fret * shrinkFactor}px);
-  min-width: 30px;
-  text-shadow: 0px 1px 0px #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
