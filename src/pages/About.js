@@ -22,7 +22,7 @@ const About = () => {
   return (
     <Page>
       <div>
-        <div style={{textAlign: 'center', marginBottom: '5%'}}>
+        <div style={{textAlign: 'center', marginBottom: '3%'}}>
           <h2 >About String Theory</h2>
         </div>
         <Body>
@@ -44,10 +44,7 @@ const About = () => {
             or
             <Link to="https://www.linkedin.com/in/-aaroncohen/" text="LinkedIn." />
             I love hearing feedback from users, even if it is just
-            that you enjoyed using String Theory.
-          </Text>
-          <Text>
-            Thank you for using String Theory. Happy strumming!
+            that you enjoyed using String Theory. Happy strumming!
           </Text>
         </Body>
       </div>

@@ -18,7 +18,7 @@ export const Body = styled.div`
 
 export const Page = styled.div`
   display: inline-flex;
-  margin: 4% 15% 5% 20%;
+  margin: 3% 15% 0 20%;
   justify-content: center;
   align-content: center;
   font-size: 3rem;
