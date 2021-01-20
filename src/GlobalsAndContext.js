@@ -87,41 +87,110 @@ export function mapNoteToNumber(note) {
  * flat note
  *
  */
-export function mapNumberToNote(note, accidental) {
-  // Wrap notes around chromatic octave before continuing
-  note = note % 12;
-
+export function mapNumberToNote(note, context, shownInMenu) {
   // Trap errors
   if (typeof note !== 'number') {
     throw new Error('Invalid input: must be number');
   }
-  switch (note) {
-    case 0:
-      return accidental === 'Flats' ? 'Ab' : 'G#';
-    case 1:
-      return 'A';
-    case 2:
-      return accidental === 'Flats' ? 'Bb' : 'A#';
-    case 3:
-      return 'B';
-    case 4:
-      return 'C';
-    case 5:
-      return accidental === 'Flats' ? 'Db' : 'C#';
-    case 6:
-      return 'D';
-    case 7:
-      return accidental === 'Flats' ? 'Eb' : 'D#';
-    case 8:
-      return 'E';
-    case 9:
-      return 'F';
-    case 10:
-      return accidental === 'Flats' ? 'Gb' : 'F#';
-    case 11:
-      return 'G';
-    default:
-      throw new Error('Unable to map note to numerical value');
+
+  // Wrap notes around chromatic octave before continuing
+  note = (note + 12) % 12;
+
+  /*
+     Numeric mode is tricky because we want to show numbers
+     on the fretboard, whereas in the menu, numbers don't make
+     sense. However, we don't know if the user prefers sharps
+     or flats so we just display both if in the menu and numeric mode.
+
+     If the override is disabled and numeric mode is on,
+     the switch statement returns the interval from the root.
+
+     Otherwise, for sharp or flat mode, the proper accidental
+     is displayed
+  */
+  if (shownInMenu && context.mode === 'Numerals') {
+    switch (note) {
+      case 0:
+        return 'G# / Ab';
+      case 1:
+        return 'A';
+      case 2:
+        return 'A# / Bb';
+      case 3:
+        return 'B';
+      case 4:
+        return 'C';
+      case 5:
+        return 'C# / Db';
+      case 6:
+        return 'D';
+      case 7:
+        return 'D# / Eb';
+      case 8:
+        return 'E';
+      case 9:
+        return 'F';
+      case 10:
+        return 'F# / Gb';
+      case 11:
+        return 'G';
+      default:
+        throw new Error('Unable to map note to numerical value');
+    }
+  } else if (context.mode === 'Numerals') {
+    const interval = (note - context.root + 12) % 12;
+    switch (interval) {
+      case 0:
+        return '1';
+      case 1:
+      case 2:
+        return '2';
+      case 3:
+      case 4:
+        return '3';
+      case 5:
+        return '4';
+      case 6:
+      case 7:
+        return '5';
+      case 8:
+      case 9:
+        return '6';
+      case 10:
+      case 11:
+        return '7';
+      default:
+        throw new Error('Unable to map note to numerical value');
+    }
+  } else {
+    switch (note) {
+      case 0:
+        return context.mode === 'Flats' ? 'Ab' : 'G#';
+      case 1:
+        return 'A';
+      case 2:
+        return context.mode === 'Flats' ? 'Bb' : 'A#';
+      case 3:
+        return 'B';
+      case 4:
+        return 'C';
+      case 5:
+        return context.mode === 'Flats' ? 'Db' : 'C#';
+      case 6:
+        return 'D';
+      case 7:
+        return context.mode === 'Flats' ? 'Eb' : 'D#';
+      case 8:
+        return 'E';
+      case 9:
+        return 'F';
+      case 10:
+        return context.mode === 'Flats' ? 'Gb' : 'F#';
+      case 11:
+        return 'G';
+      default:
+        throw new Error('Unable to map note to numerical value');
+    }
   }
 }
 

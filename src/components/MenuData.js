@@ -21,7 +21,7 @@ function updateSingleItem(list, index) {
 
 export const menuData = (context) => [
   {
-    title: 'Sharp/Flat Mode',
+    title: 'Note Display Mode',
     icon: <FaIcons.FaSlidersH />,
     iconClosed: <RiArrowDownSFill />,
     iconOpened: <RiArrowUpSFill />,
@@ -35,71 +35,13 @@ export const menuData = (context) => [
         title: 'Flats',
         icon: <CgTrendingDown />,
       },
+      {
+        title: 'Numerals',
+        icon: <FaIcons.FaSortNumericDown />,
+      },
     ],
     action: (choice) => context.updateMode(choice.title),
     updateList: (list, index) => updateSingleItem(list, index),
-  },
-  {
-    title: 'Custom Tuning',
-    icon: <FaIcons.FaGuitar />,
-    iconClosed: <RiArrowDownSFill />,
-    iconOpened: <RiArrowUpSFill />,
-    page: '/',
-    subNav: [
-      {
-        title: mapNumberToNote(context.tuning[0], context.mode),
-        icon: <GiTunePitch />,
-        iconClosed: <RiArrowDownSFill />,
-        iconOpened: <RiArrowUpSFill />,
-        subNav: [
-          {
-            title: 'inner level',
-            icon: <FaIcons.FaGuitar />,
-          },
-          {
-            title: 'inner level',
-            icon: <FaIcons.FaGuitar />,
-          },
-        ],
-      },
-      {
-        title: mapNumberToNote(context.tuning[1], context.mode),
-        icon: <GiTunePitch />,
-      },
-      {
-        title: mapNumberToNote(context.tuning[2], context.mode),
-        icon: <GiTunePitch />,
-      },
-      {
-        title: mapNumberToNote(context.tuning[3], context.mode),
-        icon: <GiTunePitch />,
-      },
-      {
-        title: mapNumberToNote(context.tuning[4], context.mode),
-        icon: <GiTunePitch />,
-      },
-      {
-        title: mapNumberToNote(context.tuning[5], context.mode),
-        icon: <GiTunePitch />,
-      },
-    ],
-    editable: true,
-    action: () => { },
-    updateList: (list) => list,
-    updateTuning: (input, index) => {
-      input = input.trim().toLowerCase();
-      if (input.length < 1) return false;
-      if (input.length > 2) input = input.substring(0, 2);
-
-      input = input.toUpperCase().charAt(0) + input.slice(1);
-      const note = mapNoteToNumber(input);
-      if (note < 0) return false;
-
-      // Input is determined to be valid at this point.
-      // Must update context's tuning so fretboard can update.
-      context.updateTuning(index, note);
-      return input;
-    },
   },
   {
     title: 'Tuning Presets',
@@ -148,6 +90,11 @@ export const menuData = (context) => [
         tuning: ['E', 'A', 'G', 'C', 'A', 'F'],
         icon: <FaIcons.FaUserAlt />,
       },
+      {
+        title: 'D G G D G C\n(Adrianne Lenker)',
+        tuning: ['D', 'G', 'G', 'D', 'G', 'C'],
+        icon: <FaIcons.FaUserAlt />,
+      },
     ],
     action: (info) => context.setTuning(
         info.tuning.map((e) => mapNoteToNumber(e)), // Lint required comma here
@@ -155,73 +102,54 @@ export const menuData = (context) => [
     updateList: (list, index) => updateSingleItem(list, index),
   },
   {
-    title: 'Root Note / Key',
-    icon: <FaIcons.FaSortAlphaDown />,
+    title: 'Custom Tuning',
+    icon: <FaIcons.FaGuitar />,
     iconClosed: <RiArrowDownSFill />,
     iconOpened: <RiArrowUpSFill />,
     page: '/',
     subNav: [
       {
-        title: 'A',
-        icon: <FaIcons.FaMapPin />,
+        title: mapNumberToNote(context.tuning[0], context, true),
+        icon: <GiTunePitch />,
       },
       {
-        title: context.mode === 'Sharps' ? 'A#' : 'Bb',
-        icon: <FaIcons.FaMapPin />,
+        title: mapNumberToNote(context.tuning[1], context, true),
+        icon: <GiTunePitch />,
       },
       {
-        title: 'B',
-        icon: <FaIcons.FaMapPin />,
+        title: mapNumberToNote(context.tuning[2], context, true),
+        icon: <GiTunePitch />,
       },
       {
-        title: 'C',
-        icon: <FaIcons.FaMapPin />,
+        title: mapNumberToNote(context.tuning[3], context, true),
+        icon: <GiTunePitch />,
       },
       {
-        title: context.mode === 'Sharps' ? 'C#' : 'Db',
-        icon: <FaIcons.FaMapPin />,
+        title: mapNumberToNote(context.tuning[4], context, true),
+        icon: <GiTunePitch />,
       },
       {
-        title: 'D',
-        icon: <FaIcons.FaMapPin />,
-      },
-      {
-        title: context.mode === 'Sharps' ? 'D#' : 'Eb',
-        icon: <FaIcons.FaMapPin />,
-      },
-      {
-        title: 'E',
-        icon: <FaIcons.FaMapPin />,
-      },
-      {
-        title: 'F',
-        icon: <FaIcons.FaMapPin />,
-      },
-      {
-        title: context.mode === 'Sharps' ? 'F#' : 'Gb',
-        icon: <FaIcons.FaMapPin />,
-      },
-      {
-        title: 'G',
-        icon: <FaIcons.FaMapPin />,
-      },
-      {
-        title: context.mode === 'Sharps' ? 'G#' : 'Ab',
-        icon: <FaIcons.FaMapPin />,
+        title: mapNumberToNote(context.tuning[5], context, true),
+        icon: <GiTunePitch />,
       },
     ],
-    action: (root) => {
-      root = root.title;
-      // Two-part approach: update root, but also recalculate
-      // the selected set of notes with relation to new root
-      const note = mapNoteToNumber(root);
-      const difference = context.noteSet[0] - note;
-      const newVals = context.noteSet.map((e) => (e - difference + 12) % 12);
+    editable: true,
+    action: () => { },
+    updateList: (list) => list,
+    updateTuning: (input, index) => {
+      input = input.trim().toLowerCase();
+      if (input.length < 1) return false;
+      if (input.length > 2) input = input.substring(0, 2);
 
-      context.updateRoot(note);
-      context.updateNoteSet(newVals);
+      input = input.toUpperCase().charAt(0) + input.slice(1);
+      const note = mapNoteToNumber(input);
+      if (note < 0) return false;
+
+      // Input is determined to be valid at this point.
+      // Must update context's tuning so fretboard can update.
+      context.updateTuning(index, note);
+      return input;
     },
-    updateList: (list, index) => updateSingleItem(list, index),
   },
   {
     title: 'Pattern Type',
@@ -309,7 +237,76 @@ export const menuData = (context) => [
             return scale;
         }
       };
-      return context.updateNoteSet(noteSet());
+      return context.updateNoteSet( noteSet().map((e) => (e+12)%12 ) );
+    },
+    updateList: (list, index) => updateSingleItem(list, index),
+  },
+  {
+    title: 'Root Note / Key',
+    icon: <FaIcons.FaSortAlphaDown />,
+    iconClosed: <RiArrowDownSFill />,
+    iconOpened: <RiArrowUpSFill />,
+    page: '/',
+    subNav: [
+      {
+        title: 'A',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: context.mode === 'Sharps' ? 'A#' : 'Bb',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: 'B',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: 'C',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: context.mode === 'Sharps' ? 'C#' : 'Db',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: 'D',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: context.mode === 'Sharps' ? 'D#' : 'Eb',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: 'E',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: 'F',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: context.mode === 'Sharps' ? 'F#' : 'Gb',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: 'G',
+        icon: <FaIcons.FaMapPin />,
+      },
+      {
+        title: context.mode === 'Sharps' ? 'G#' : 'Ab',
+        icon: <FaIcons.FaMapPin />,
+      },
+    ],
+    action: (root) => {
+      root = root.title;
+      // Two-part approach: update root, but also recalculate
+      // the selected set of notes with relation to new root
+      const note = mapNoteToNumber(root);
+      const difference = context.noteSet[0] - note;
+      const newVals = context.noteSet.map((e) => (e - difference + 12) % 12);
+
+      context.updateRoot(note);
+      context.updateNoteSet(newVals);
     },
     updateList: (list, index) => updateSingleItem(list, index),
   },
