@@ -143,20 +143,25 @@ export function mapNumberToNote(note, context, shownInMenu) {
       case 0:
         return '1';
       case 1:
+        return 'b2';
       case 2:
         return '2';
       case 3:
+        return 'b3';
       case 4:
         return '3';
       case 5:
         return '4';
       case 6:
+        return 'b5';
       case 7:
         return '5';
       case 8:
+        return '#5';
       case 9:
         return '6';
       case 10:
+        return 'b7';
       case 11:
         return '7';
       default:
